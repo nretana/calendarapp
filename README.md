@@ -11,13 +11,13 @@ A calendar app for tracking your appointments.
 
 <br />
 <div align="center">
-  <img src="mkdimgs/landingpage.png" alt="Landing Page" width="1347" height="712">
+  <img src="mkdimgs/landingpage.png" alt="Landing Page" width="830" height="440.23">
   <br />
   <br />
-  <img src="mkdimgs/homepagesection.png" alt="Section in Home Page" width="1347" height="808">
+  <img src="mkdimgs/homepagesection.png" alt="Section in Home Page" width="830" height="497">
   <br />
   <br />
-  <img src="mkdimgs/weeklycalendar.png" alt="Weekly Calendar" width="1341" height="614">
+  <img src="mkdimgs/weeklycalendar.png" alt="Weekly Calendar" width="830" height="379.54">
   <br />
 </div>
 
