@@ -1,0 +1,35 @@
+@import '../../../../assets/scss/core/functions';
+@import '../../../../assets/scss/core/variables';
+
+.grid-header {
+    display: grid;
+    grid-template-columns: 60px repeat(7, 1fr);
+    border-bottom: $border-width solid $white;
+
+    .grid-column {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        padding: 0.5rem 0;
+
+        &:first-of-type {
+            margin-left: 0;
+        }
+
+        &:last-of-type {
+            border: 0;
+            margin-right: 0;
+        }
+
+        .day-num {
+            color: $primary-color-tone-100;
+            font-weight: 900;
+            margin-bottom: 0;
+        }
+
+        .day-label {
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+    }
+}

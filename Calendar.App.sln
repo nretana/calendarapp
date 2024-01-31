@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar.Appointment.API", "Calendar.Appointment.API\Calendar.Appointment.API.csproj", "{519D3133-4252-475A-B0A3-F47693EA0CD5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Calendar.Services", "Calendar.Services", "{8038B8FE-90FB-4B9A-B551-0A8FA833FBFB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar.Shared", "Calendar.Shared\Calendar.Shared.csproj", "{5D6F3AD0-D4FC-4CDD-9576-9ECFCBDFC3E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Calendar.Shared", "Calendar.Shared", "{9AD1C01E-12D0-4561-9B19-892EBEA3F24E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar.Notification.API", "Calendar.Notification.API\Calendar.Notification.API.csproj", "{798F47A0-8DE6-48F4-9DAF-0F693100EF79}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Calendar.Gateway", "Calendar.Gateway", "{C85A5B1A-CD6D-4916-B092-B75CABAF6ABD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar.Gateway", "Calendar.Gateway\Calendar.Gateway.csproj", "{B89378CE-C336-492F-BF66-463A5A9AF9E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Calendar Items", "Calendar Items", "{41630E32-9633-4530-ACBC-46AF6B538197}"
+	ProjectSection(SolutionItems) = preProject
+		calendarapp.yml = calendarapp.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL Server Db", "SQL Server Db", "{B98FABA2-70EE-4716-B8D0-008FBD3AF536}"
+	ProjectSection(SolutionItems) = preProject
+		SQL Server Db\calendardb.bak = SQL Server Db\calendardb.bak
+		SQL Server Db\Dockerfile = SQL Server Db\Dockerfile
+		SQL Server Db\entrypoint.sh = SQL Server Db\entrypoint.sh
+		SQL Server Db\initdb.sh = SQL Server Db\initdb.sh
+		SQL Server Db\restoredbscript.sql = SQL Server Db\restoredbscript.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMQ", "RabbitMQ", "{132260F4-472A-4B0B-A353-91853CDD2488}"
+	ProjectSection(SolutionItems) = preProject
+		RabbitMQ\definitions.default.json = RabbitMQ\definitions.default.json
+		RabbitMQ\Dockerfile = RabbitMQ\Dockerfile
+		RabbitMQ\entrypoint.sh = RabbitMQ\entrypoint.sh
+		RabbitMQ\init.sh = RabbitMQ\init.sh
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{519D3133-4252-475A-B0A3-F47693EA0CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{519D3133-4252-475A-B0A3-F47693EA0CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{519D3133-4252-475A-B0A3-F47693EA0CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{519D3133-4252-475A-B0A3-F47693EA0CD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D6F3AD0-D4FC-4CDD-9576-9ECFCBDFC3E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D6F3AD0-D4FC-4CDD-9576-9ECFCBDFC3E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D6F3AD0-D4FC-4CDD-9576-9ECFCBDFC3E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D6F3AD0-D4FC-4CDD-9576-9ECFCBDFC3E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{798F47A0-8DE6-48F4-9DAF-0F693100EF79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{798F47A0-8DE6-48F4-9DAF-0F693100EF79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{798F47A0-8DE6-48F4-9DAF-0F693100EF79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{798F47A0-8DE6-48F4-9DAF-0F693100EF79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B89378CE-C336-492F-BF66-463A5A9AF9E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B89378CE-C336-492F-BF66-463A5A9AF9E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B89378CE-C336-492F-BF66-463A5A9AF9E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B89378CE-C336-492F-BF66-463A5A9AF9E3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{519D3133-4252-475A-B0A3-F47693EA0CD5} = {8038B8FE-90FB-4B9A-B551-0A8FA833FBFB}
+		{5D6F3AD0-D4FC-4CDD-9576-9ECFCBDFC3E4} = {9AD1C01E-12D0-4561-9B19-892EBEA3F24E}
+		{798F47A0-8DE6-48F4-9DAF-0F693100EF79} = {8038B8FE-90FB-4B9A-B551-0A8FA833FBFB}
+		{B89378CE-C336-492F-BF66-463A5A9AF9E3} = {C85A5B1A-CD6D-4916-B092-B75CABAF6ABD}
+		{B98FABA2-70EE-4716-B8D0-008FBD3AF536} = {41630E32-9633-4530-ACBC-46AF6B538197}
+		{132260F4-472A-4B0B-A353-91853CDD2488} = {41630E32-9633-4530-ACBC-46AF6B538197}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6E7CF2BB-7860-4D38-B7EC-37255C684553}
+	EndGlobalSection
+EndGlobal

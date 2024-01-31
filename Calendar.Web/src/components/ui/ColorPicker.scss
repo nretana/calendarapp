@@ -1,0 +1,41 @@
+@import './../../assets/scss/core/functions';
+@import './../../assets/scss/core/variables';
+
+.color-picker {
+  display: flex;
+  flex-direction: row;
+  .color-picker-radio {
+
+    &:before {
+      content: none;
+    }
+
+    .color-radio {
+      display: block;
+      width: 2rem;
+      height: 2rem;
+      box-sizing: border-box;
+      border: 0.143rem solid rgba($primary-color, 0.35);
+      background: $primary-color;
+      border-radius: 1.286rem;
+      transition: all 200ms;
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: var(--#{$prefix}radiogroup-radio-focus-box-shadow);
+      }
+    }
+
+    &[data-selected] {
+      .color-radio {
+        border-width: 0.4rem;
+      }
+    }
+
+    &[data-focused] {
+      .color-radio {
+        box-shadow: var(--#{$prefix}radiogroup-radio-focus-box-shadow);
+      }
+    }
+  }
+}

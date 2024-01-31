@@ -1,0 +1,27 @@
+@import '../../../assets/scss/core/functions';
+@import '../../../assets/scss/core/variables';
+
+.form-content {
+    opacity: 0;
+    animation: fadeIn 200ms linear 930ms forwards;
+    
+    .form-control {
+        &.is-invalid {
+            padding-right: 0;
+        }
+    }
+
+    legend {
+        font-size: inherit;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

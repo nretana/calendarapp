@@ -1,0 +1,252 @@
+@use "sass:string";
+@use 'sass:list';
+
+@import '../../assets/scss/core/functions';
+@import '../../assets/scss/core/variables';
+@import '../../assets/scss/core/mixins';
+
+/*.body-content {
+    position: relative;
+    height: 5331px;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+
+    &:before {
+        content: ' ';
+        background-image: url('../../assets/imgs/body_bg.svg');
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        background-size: contain;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5331px;
+    }
+}*/
+
+
+@function get-image-url($imageList){
+    $imageUrls: ();
+    @each $imgUrl in $imageList {
+        @if $imgUrl != null {
+            $imageUrls: append($imageUrls, "url('#{$imgUrl}')", "comma");
+        }
+    }
+    @return  #{$imageUrls};
+}
+
+@function get-image-position($imagePositionList){
+    $imagePositions: ();
+    @each $imgPos in $imagePositionList {
+        @if $imgPos != null {
+            $imagePositions: append($imagePositions, $imgPos, "comma");
+        }
+    }
+    @return  #{$imagePositions};
+}
+
+@mixin border-radius-inset($images, $imagePositions){
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: $secondary-color;
+    mask-image: get-image-url($images);
+    mask-position: get-image-position($imagePositions);
+    mask-repeat: no-repeat, no-repeat;
+    mask-size: 29px 29px, 29px, 29px;
+    width: 100%;
+    height: 100%;
+}
+
+
+//12 cells
+//6 rows
+//2 columns
+//38 cells (each div can contain 6 cells or more)
+.grid-content {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: repeat(34, auto);
+    margin: 0 0.75rem;
+    $grid-border-radius-width: 29px;
+    grid-row-gap: 2rem;
+
+    position: relative;
+
+    [class^='grid-cell']{
+        background-color: $secondary-color;
+        border-radius: $grid-border-radius-width;
+        color: $white;
+        padding: 3rem 3rem;
+
+        h2 {
+            font-family: 'Tenor Sans';
+        }
+    }
+
+    .grid-cell-1 {
+        grid-column: 1 / span 2;
+        grid-row: 1 / span 6;
+    }
+
+    .grid-cell-2, .grid-cell-3, .grid-cell-6, .grid-cell-8 {
+        display: none;
+    }
+
+    .grid-cell-4 {
+        grid-column: 1 / span 2;
+        grid-row: 7 / span 6;
+    }
+
+    .grid-cell-5 {
+        grid-column: 1 / span 2;
+        grid-row: 13 / span 6;
+    }
+
+    .grid-cell-7 { //customers
+        grid-column: 1 / span 2;
+        grid-row: 19 / span 8;
+        position: relative;
+    }
+
+    .grid-cell-9 {
+        grid-column: 1 / span 2;
+        grid-row: 27 / span 6;
+        position: relative;
+    }
+    .grid-cell-10 { //faq
+        grid-column: 1 / span 2;
+        grid-row: 33 / span 6;
+        position: relative;
+    }
+}
+
+
+@include media-breakpoint-up(xl) { 
+
+    //12 cells
+    //6 rows
+    //2 columns
+    //38 cells (each div can contain 6 cells or more)
+    .grid-content {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: repeat(34, auto);
+        position: relative;
+        margin: 0;
+        grid-row-gap: 0;
+
+        [class^='grid-cell']{
+            background-color: $secondary-color;
+            position: relative;
+            margin: 0;
+
+            h2 {
+                font-size: 3rem;
+            }
+    
+            p {
+                font-size: 1.25rem;
+            }
+        }
+
+        .grid-cell-1 {
+            grid-column: 1 / 2;
+            grid-row: 1 / span 8; //from row 1 span to 8 rows
+            border-bottom-right-radius: 0;
+        }
+
+        .grid-cell-2, .grid-cell-3, .grid-cell-6, .grid-cell-8 {
+            display: block;
+        }
+
+        .grid-cell-2 {
+            grid-column: 2 / 2; //from column 2 to column 2
+            grid-row: 1 / span 5;
+            background-color: transparent;
+            $imgPositions: ();
+
+            &:before {
+                content: " ";
+                $imageList: './../../assets/imgs/corner_bottom_left_icon.svg';
+                //format for img position is: 0 0
+                //use a comma at then end to declare the list separator is by a comma
+                $imagePositionList: -1px calc(100% + 0.5px),;
+                @include border-radius-inset($imageList, $imagePositionList);
+            }
+        }
+
+        .grid-cell-3 {
+            grid-column: 1 / 2;
+            grid-row: 9 / span 3;
+            background-color: transparent;
+
+            &:before {
+                content: " ";
+                $imageList: './../../assets/imgs/corner_top_right_icon.svg', './../../assets/imgs/corner_bottom_right_icon.svg';
+                $imagePositionList: calc(100% + 0.5px) -0.5px, calc(100% + 0.5px) calc(100% + 0.5px);
+                @include border-radius-inset($imageList, $imagePositionList);
+            }
+        }
+
+        .grid-cell-4 {
+            grid-column: 2 / 2;
+            grid-row: 6 / span 9; // from row 6  span 8 rows
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .grid-cell-5 {
+            grid-column: 1 / 2;
+            grid-row: 12 / span 6;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .grid-cell-6 {
+            grid-column: 2 / 2;
+            grid-row: 15 / span 3;
+            background-color: transparent;
+
+            &:before {
+                content: " ";
+                $imageList: './../../assets/imgs/corner_top_left_icon.svg', './../../assets/imgs/corner_bottom_left_icon.svg';
+                $imagePositionList: -1px -1px, -1px 100%;
+                @include border-radius-inset($imageList, $imagePositionList);
+            }
+        }
+
+        .grid-cell-7 {
+            grid-column: 1 / span 2;
+            grid-row: 18 / span 6;
+            border-top-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .grid-cell-8 {
+            grid-column: 1 / 2;
+            grid-row: 24 / span 5;
+            background-color: transparent;
+
+            &:before {
+                content: " ";
+                $imageList: './../../assets/imgs/corner_top_right_icon.svg', './../../assets/imgs/corner_bottom_right_icon.svg';
+                $imagePositionList: calc(100% + 0.5px) -1px, calc(100% + 0.5px) 100%;
+                @include border-radius-inset($imageList, $imagePositionList);
+            }
+        }
+
+        .grid-cell-9 {
+            grid-column: 2 / 2;
+            grid-row: 24 / span 5;
+            border-radius: 0;
+        }
+        .grid-cell-10 {
+            grid-column: 1 / 3;
+            grid-row: 29 / span 6;
+            border-top-right-radius: 0;
+        }
+    }
+}

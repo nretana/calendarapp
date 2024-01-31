@@ -1,0 +1,44 @@
+@import '../../../assets/scss/core/functions';
+@import '../../../assets/scss/core/variables';
+@import '../../../assets/scss/core/mixins';
+
+.navbar {
+    backdrop-filter: blur(25px);
+    color: $secondary-color;
+    font-size: 1.25rem;
+
+    .navbar-brand > img {
+        width: 60px;
+        height: auto;
+    }
+
+    a.nav-link {
+        margin: 0;
+        color: $secondary-color;
+        border-bottom: 5px solid transparent;
+        &:last-of-type {
+            margin-right: 0;
+        }
+
+        &.active {
+            color: $accent-2-dark-color;
+        }
+
+        &:hover {
+            border-bottom: 5px solid $accent-2-dark-color;
+        }
+    }
+}
+
+@include media-breakpoint-up(lg){
+    .navbar {
+        .navbar-brand > img {
+            width: 65px;
+            height: auto;
+        }
+
+        a.nav-link {
+            margin: 0 2.75rem;
+        }
+    }
+}

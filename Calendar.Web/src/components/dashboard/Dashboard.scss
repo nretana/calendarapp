@@ -1,0 +1,15 @@
+@import '../../assets/scss/core/functions';
+@import '../../assets/scss/core/variables';
+
+.dashboard-section {
+    .side-content {
+        background: $bg-primary-color-shade-900;
+        color: $primary-color-tint-100;
+        padding: 2rem 1.5rem;
+        height: 100%;
+    }
+
+    .brand-logo-light {
+        width: 30px;
+    }
+}

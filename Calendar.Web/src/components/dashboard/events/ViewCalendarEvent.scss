@@ -1,0 +1,12 @@
+
+@keyframes fade-in {
+    from {
+      transform: translate(0%, -40%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translate(0%, 0%);
+      opacity: 1;
+    }
+  }

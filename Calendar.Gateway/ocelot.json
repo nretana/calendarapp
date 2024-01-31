@@ -1,0 +1,98 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/events",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appointmentapi.chronoswebsite.dev",
+          "Port": 7246
+        }
+      ],
+      "UpstreamPathTemplate": "/api/events",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/events/{eventId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appointmentapi.chronoswebsite.dev",
+          "Port": 7246
+        }
+      ],
+      "UpstreamPathTemplate": "/api/events/{eventId}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/events",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appointmentapi.chronoswebsite.dev",
+          "Port": 7246
+        }
+      ],
+      "UpstreamPathTemplate": "/api/events",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/events/{eventId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appointmentapi.chronoswebsite.dev",
+          "Port": 7246
+        }
+      ],
+      "UpstreamPathTemplate": "/api/events/{eventId}",
+      "UpstreamHttpMethod": [ "PATCH" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/events/{eventId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appointmentapi.chronoswebsite.dev",
+          "Port": 7246
+        }
+      ],
+      "UpstreamPathTemplate": "/api/events/{eventId}",
+      "UpstreamHttpMethod": [ "DELETE" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/events",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appointmentapi.chronoswebsite.dev",
+          "Port": 7246
+        }
+      ],
+      "UpstreamPathTemplate": "/api/events",
+      "UpstreamHttpMethod": [ "OPTIONS" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/events/{eventId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appointmentapi.chronoswebsite.dev",
+          "Port": 7246
+        }
+      ],
+      "UpstreamPathTemplate": "/api/events/{eventId}",
+      "UpstreamHttpMethod": [ "OPTIONS" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "baseUrl": "https://gatewayapi.chronoswebsite.dev:7074"
+  }
+  
+}

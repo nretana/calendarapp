@@ -1,0 +1,27 @@
+@import '../../../../assets/scss/core/functions';
+@import '../../../../assets/scss/core/variables';
+
+.event-calendar-compact-view {
+    font-size: 12px;
+    font-weight: 700;
+    height: 100%;
+    color: $white;
+    border-radius: 0.5rem;
+    opacity: 0;
+
+    .event-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: $primary-color;
+        border-radius: $border-radius;
+        padding: 0 0.5rem;
+        height: 25px;
+    }
+
+    .remove-icon {
+        fill: $white;
+        line-height: 0;
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,13 @@
+@import './assets/scss/core/functions';
+@import './assets/scss/core/variables';
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: $accent-color-tint-100;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

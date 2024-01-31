@@ -1,0 +1,38 @@
+@import '../../../assets/scss/core/functions';
+@import '../../../assets/scss/core/variables';
+
+
+.container-calendar-picker {
+
+    background: $bg-primary-color-shade-900;
+    color: $primary-color-tint-100;
+    //padding: 1.5rem 0;
+
+    .react-aria-Calendar {
+        .react-aria-Header {
+            padding-bottom: 2rem;
+            margin-bottom: 0;
+            border-bottom: $border-width solid $white-300;
+    
+            .react-aria-Heading {
+                letter-spacing: 0.1rem;
+                //font-weight: 700;
+            }
+        }
+
+        .react-aria-CalendarGrid {
+            margin-top: 2rem;
+
+            .react-aria-CalendarGridHeader {
+                th.react-aria-CalendarHeaderCell {
+                    font-weight: 700;
+                    color: $accent-color;
+                }
+            }
+        }
+    }
+
+}
+
+
+

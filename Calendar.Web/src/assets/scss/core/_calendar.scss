@@ -1,0 +1,163 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
+
+.react-aria-Calendar {
+
+    --#{$prefix}calendar-highlight-background: #{$calendar-highlight-background};
+    --#{$prefix}calendar-highlight-color: #{$calendar-highlight-color};
+    --#{$prefix}calendar-text-color: #{$calendar-text-color};
+    --#{$prefix}calendar-text-color-disabled: #{$calendar-text-color-disabled};
+    --#{$prefix}calendar-text-color-invalid: #{$calendar-text-color-invalid};
+    --#{$prefix}calendar-pressed-color: #{$calendar-pressed-color};
+    --#{$prefix}calendar-unavailable-color: #{$calendar-unavailable-color};
+    --#{$prefix}calendar-invalid-color: #{$calendar-invalid-color};
+    --#{$prefix}calendar-cell-border-color: #{$calendar-cell-border-color};
+    --#{$prefix}calendar-cell-border-width: #{$calendar-cell-border-width};
+    --#{$prefix}calendar-cell-border-radius: #{$calendar-cell-border-radius};
+    --#{$prefix}calendar-focus-ring-color: 0 0 0 #{$calendar-focus-width} rgba(#{$calendar-focus-ring-color}, .5);
+  
+    width: 100%; //fit-content;
+    max-width: 100%;
+    color: var(--#{$prefix}calendar-text-color);
+  
+    & header {
+      display: flex;
+      align-items: center;
+      margin: 0 4px .5rem 4px;
+  
+      .react-aria-Heading {
+        flex: 1;
+        margin: 0;
+        text-align: center;
+        font-size: 1.7rem;
+      }
+    }
+  
+    .react-aria-Button {
+      width: 3rem;
+      height: 3rem;
+      padding: 0;
+    }
+
+    .react-aria-CalendarGrid {
+        width: 100%;
+        margin-top: 1.5rem;
+
+        .react-aria-CalendarHeaderCell {
+            text-align: center;
+            font-size: 1.25rem;
+        }
+    }
+
+    .react-aria-CalendarCell {
+      width: 3rem;
+      line-height: 3rem;
+      text-align: center;
+      border-radius: 2rem;
+      cursor: pointer;
+      outline: none;
+      border: var(--#{$prefix}calendar-cell-border-width) solid var(--#{$prefix}calendar-cell-border-color);
+      margin: auto;
+  
+      &[data-outside-month] {
+        display: none;
+      }
+  
+      &[data-pressed] {
+        background: var(--#{$prefix}calendar-pressed-color);
+      }
+  
+      &[data-focus-visible] {
+        box-shadow: var(--#{$prefix}calendar-focus-ring-color);
+        //box-shadow: 0 0 0 2px var(--#{$prefix}calendar-highlight-color);
+      }
+  
+      &[data-selected] {
+        background: var(--#{$prefix}calendar-highlight-background);
+        color: var(--#{$prefix}calendar-highlight-color);
+      }
+  
+      &[data-disabled] {
+        color: var(--#{$prefix}calendar-text-color-disabled);
+      }
+  
+      &[data-unavailable] {
+        text-decoration: line-through;
+        color: var(--#{$prefix}calendar-unavailable-color);
+      }
+  
+      &[data-invalid] {
+        background: var(--#{$prefix}calendar-invalid-color);
+        color: var(--#{$prefix}calendar-highlight-foreground);
+      }
+    }
+  
+    [slot=errorMessage] {
+      font-size: 12px;
+      color: var(--#{$prefix}calendar-text-color-invalid);
+    }
+  }
+  
+  .react-aria-Button {
+    --#{$prefix}calendar-button-background: #{$calendar-button-background};
+    --#{$prefix}calendar-button-backgound-pressed: #{$calendar-button-backgound-pressed};
+    --#{$prefix}calendar-button-color:  #{$calendar-button-color};
+    --#{$prefix}calendar-button-border: #{$calendar-button-border};
+    --#{$prefix}calendar-button-border-disabled: #{$calendar-button-border-disabled};
+  
+    background: var(--#{$prefix}calendar-button-background);
+    border: 1px solid var(--#{$prefix}calendar-button-border);
+    color: var(--#{$prefix}calendar-button-color); //var(--#{$prefix}calendar-text-color);
+    fill: var(--#{$prefix}calendar-button-color);
+    box-shadow: 0 1px 2px rgba(0 0 0 / 0.1);
+    border-radius: 2rem;
+    appearance: none;
+    vertical-align: middle;
+    font-size: 1rem;
+    padding: 0.4rem;
+    text-align: center;
+    margin: 0;
+    outline: none;
+    width: 3rem;
+    height: 3rem;
+  
+    &[data-focus-visible] {
+      //border-color: var(--#{$prefix}calendar-focus-ring-color);
+      box-shadow: var(--#{$prefix}calendar-focus-ring-color);
+    }
+  
+    &[data-pressed] {
+      background: var(--#{$prefix}calendar-button-backgound-pressed);
+    }
+  
+    &[data-disabled] {
+      border-color: var(--#{$prefix}calendar-button-border-disabled);
+      color: var(--#{$prefix}calendar-text-color-disabled);
+    }
+  }
+  
+  /*@media (forced-colors: active) {
+    .react-aria-Calendar {
+      forced-color-adjust: none;
+  
+      --highlight-background: Highlight;
+      --highlight-foreground: HighlightText;
+      --text-color: ButtonText;
+      --text-color-disabled: GrayText;
+      --text-color-invalid: LinkText;
+      --unavailable-color: GrayText;
+      --invalid-color: LinkText;
+      --pressed-color: Canvas;
+      --spectrum-alias-background-color-default: Canvas;
+    }
+  
+    .react-aria-Button {
+      --button-border: ButtonBorder;
+      --button-border-disabled: GrayText;
+      --button-background: ButtonFace;
+      --button-backgound-pressed: ButtonFace;
+      --focus-ring-color: Highlight;
+      --text-color-disabled: GrayText;
+    }
+  }*/

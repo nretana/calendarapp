@@ -1,0 +1,28 @@
+@import '../../../../assets/scss/core/functions';
+@import '../../../../assets/scss/core/variables';
+
+.calendar-board-header {
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    //border-bottom: $border-width solid $border-color;
+
+    .user-menu {
+        background-color: $bg-primary-color-shade-500;
+        width: 70px;
+        height: 70px;
+        border-radius: 50% 50%;
+        cursor: pointer;
+    }
+
+    .bg-circle {
+        background-color: $bg-primary-color-shade-500;
+        border-radius: 50% 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+} 

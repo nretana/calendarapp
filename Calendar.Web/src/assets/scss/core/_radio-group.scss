@@ -1,0 +1,84 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
+
+.react-aria-RadioGroup {
+    --#{$prefix}radiogroup-radio-label-color: #{$radiogroup-radio-label-color};
+    --#{$prefix}radiogroup-radio-deselected-color: #{$radiogroup-radio-deselected-color};
+    --#{$prefix}radiogroup-radio-deselected-color-pressed: #{$radiogroup-radio-deselected-color-pressed};
+    --#{$prefix}radiogroup-radio-background-color: #{$radiogroup-radio-background-color};
+    --#{$prefix}radiogroup-radio-selected-color: #{$radiogroup-radio-selected-color};
+    --#{$prefix}radiogroup-radio-selected-color-pressed: #{$radiogroup-radio-selected-color-pressed};
+    --#{$prefix}radiogroup-radio-invalid-color: #{$radiogroup-radio-invalid-color};
+    --#{$prefix}radiogroup-radio-invalid-color-pressed: #{$radiogroup-radio-invalid-color-pressed};
+    --#{$prefix}radiogroup-radio-focus-box-shadow: 0 0 0 #{$radiogroup-radio-focus-width} rgba(#{$radiogroup-radio-focus-ring-color}, .5); //#{$radiogroup-radio-focus-box-shadow};
+    
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .react-aria-Radio {
+    display: flex;
+    align-items: center;
+    gap: 0.571rem;
+    //font-size: 1.143rem;
+    color: var(--#{$prefix}radiogroup-radio-label-color);
+  
+    &:before {
+      content: '';
+      display: block;
+      width: 1.286rem;
+      height: 1.286rem;
+      box-sizing: border-box;
+      border: 0.143rem solid var(--#{$prefix}radiogroup-radio-deselected-color);
+      background: var(--#{$prefix}radiogroup-radio-background-color);
+      border-radius: 1.286rem;
+      transition: all 200ms;
+    }
+  
+    &[data-pressed]:before {
+      border-color: var(--#{$prefix}radiogroup-radio-deselected-color-pressed);
+    }
+  
+    &[data-selected] {
+      &:before {
+        border-color: var(--#{$prefix}radiogroup-radio-selected-color);
+        border-width: 0.429rem;
+      }
+  
+      &[data-pressed]:before {
+        border-color: var(--#{$prefix}radiogroup-radio-selected-color-pressed);
+      }
+    }
+
+    &[data-invalid] {
+        &:before {
+          border-color: var(--#{$prefix}radiogroup-radio-invalid-color);
+        }
+    
+        &[data-pressed]:before {
+          border-color: var(--#{$prefix}radiogroup-radio-invalid-color-pressed);
+        }
+      }
+  
+    &[data-focus-visible]:before {
+      box-shadow: var(--#{$prefix}radiogroup-radio-focus-box-shadow);
+    }
+  }
+  
+  /*@media (forced-colors: active) {
+    .react-aria-RadioGroup {
+      forced-color-adjust: none;
+  
+      --label-color: ButtonText;
+      --deselected-color: ButtonBorder;
+      --deselected-color-pressed: ButtonBorder;
+      --selected-color: Highlight;
+      --selected-color-pressed: Highlight;
+      --background-color: HighlightText;
+      --invalid-color: LinkText;
+      --invalid-color-pressed: LinkText;
+      --spectrum-alias-background-color-default: Canvas;
+    }
+  }*/

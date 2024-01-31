@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="x-apple-disable-message-reformatting">
+    <title></title>
+    <style type="text/css">
+        html, body {
+            font-family: 'Lato', Helvetica, Arial, sans-serif;
+            box-sizing: border-box;
+            background-color: red;
+        }
+
+        .container {
+            width: 100%;
+            padding: 2rem 2rem;
+            box-sizing: border-box;
+            background-color: #d7ffee;
+        }
+
+        table {
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 10px;
+            background-color: #ffffff;
+            filter: drop-shadow(0 0 10px #5B967D);
+        }
+
+            table td.header {
+                padding: 1rem 1rem;
+            }
+
+            table td.main {
+                padding: 1rem 1rem;
+                /*border-top: 1px solid rgba(12, 34, 61, 0.15);
+                border-bottom: 1px solid rgba(12, 34, 61, 0.15);*/
+            }
+
+            table td.footer {
+                padding: 1rem 1rem;
+            }
+
+                table td.footer > .footer-content {
+                    padding: 0 2rem;
+                    text-align: center;
+                }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table>
+            <tbody>
+                <tr>
+                    <td class="header">
+                        <span class="wrapper">
+                            <a href="#">
+                                <img src="cid:[BrandImgSrc]" alt="" />
+                            </a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="main">
+                        <div class="main-content">
+                            <p class="text-greeting">Hello [UserName],</p>
+                            <p class="text-message">[EventNotificationMessage]</p>
+                            <P>Regards, [AppName] team</P>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="footer">
+                        <div class="footer-content">
+                            <p>This message has been generated automatically and sent to [UserEmail] by [AppName]</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

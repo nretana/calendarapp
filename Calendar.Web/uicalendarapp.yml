@@ -1,0 +1,12 @@
+version: '1'
+services:
+  uicalendarapp:
+    image: uicalendarapp:latest
+    container_name: uicalendarapp
+    ports:
+     - 8080:80
+     - 443:443
+    volumes:
+     - ${USERPROFILE}/.reactjs/shared/cert/server:/etc/nginx/certs/
+     - ${USERPROFILE}/.reactjs/shared/cert/ca:/usr/local/share/ca-certificates:ro
+     - ${USERPROFILE}/.reactjs/shared/nginx/nginx.conf:/etc/nginx/conf.d/default.conf

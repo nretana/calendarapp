@@ -1,0 +1,86 @@
+{
+  "bindings": [
+  ],
+  "exchanges": [
+  ],
+  "global_parameters": [
+  ],
+  "parameters": [
+  ],
+  "permissions": [
+    {
+      "configure": ".*",
+      "read": ".*",
+      "user": "guest",
+      "vhost": "/",
+      "write": ".*"
+    },
+    {
+      "configure": ".*",
+      "read": ".*",
+      "user": "guest",
+      "vhost": "dev_vhost",
+      "write": ".*"
+    },
+    {
+      "configure": ".*",
+      "read": ".*",
+      "user": "johndoe",
+      "vhost": "dev_vhost",
+      "write": ".*"
+    }
+  ],
+  "policies": [
+  ],
+  "queues": [
+  ],
+  "rabbit_version": "3.12.8",
+  "rabbitmq_version": "3.12.8",
+  "topic_permissions": [
+  ],
+  "users": [
+    {
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "limits": {
+      },
+      "name": "guest",
+      "password_hash": "O9Y1B+Dz2kmHkchn9/KRbzElwIg7vVVyz84MXaIHj1NFL+Ah",
+      "tags": [
+        "administrator"
+      ]
+    },
+    {
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "limits": {
+      },
+      "name": "johndoe",
+      "password_hash": "pYi4gPQ/dsZxS6+i2dAzbVa2cKJaDF+lgjih8bOvVm4x5ORt",
+      "tags": [
+        "administrator"
+      ]
+    }
+  ],
+  "vhosts": [
+    {
+      "limits": [
+      ],
+      "metadata": {
+        "default_queue_type": "classic",
+        "description": "",
+        "tags": [
+        ]
+      },
+      "name": "dev_vhost"
+    },
+    {
+      "limits": [
+      ],
+      "metadata": {
+        "description": "Default virtual host",
+        "tags": [
+        ]
+      },
+      "name": "/"
+    }
+  ]
+}

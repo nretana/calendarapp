@@ -1,0 +1,126 @@
+﻿
+version: '1.0'
+
+services:
+
+  calendarui:
+   build: 
+    context: ./Calendar.Web 
+    dockerfile: Dockerfile
+   container_name: calendar.ui
+   image: calendar.ui:latest
+   ports:
+    - 5000:443 
+   depends_on:
+    - calendargatewayapi
+   volumes:
+    - ${USERPROFILE}/.calendarapp/calendarui/nginx/nginx.conf:/etc/nginx/conf.d/default.conf 
+    - ${USERPROFILE}/.calendarapp/calendarui/cert/server:/etc/nginx/certs/
+    - ${USERPROFILE}/.calendarapp/calendarui/cert/trusted:/usr/local/share/ca-certificates:ro
+    - ${USERPROFILE}/.calendarapp/shared/cert:/usr/local/share/ca-certificates:ro
+
+
+  calendargatewayapi:
+   build: 
+    context: .
+    dockerfile: ./Calendar.Gateway/Dockerfile
+   container_name: gatewayapi.chronoswebsite.dev
+   image: calendar.api.gateway:latest
+   restart: always
+   ports:
+    - 7074:443
+   environment:
+    - ASPNETCORE_ENVIRONMENT=Production
+    - ASPNETCORE_URLS=https://+:443
+    - ASPNETCORE_HTTPS_PORTS=7074 
+    - ASPNETCORE_Kestrel__Certificates__Default__Password=[set-cert-password]
+    - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/chronos-api.pfx 
+   depends_on:
+    - calendarappointmentapi
+    - calendarnotificationapi
+   volumes:
+    - ${USERPROFILE}/.calendarapp/calendarservices/gatewayapi/cert/server:/https:ro
+    - ${USERPROFILE}/.calendarapp/calendarservices/gatewayapi/cert/trusted:/usr/local/share/ca-certificates:ro
+  
+
+  calendarappointmentapi:
+   build: 
+    context: .
+    dockerfile: ./Calendar.Appointment.API/Dockerfile
+   container_name: appointmentapi.chronoswebsite.dev
+   image: calendar.appointment.api:latest
+   restart: always
+   ports:
+    - 7171:443
+   environment:
+    - ASPNETCORE_ENVIRONMENT=Production
+    - ASPNETCORE_URLS=https://+:443
+    - ASPNETCORE_HTTPS_PORTS=7071 
+    - ASPNETCORE_Kestrel__Certificates__Default__Password=[set-cert-password]
+    - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/chronos-api.pfx
+   depends_on:
+    mssql:
+     condition: service_started
+    rabbitmq:
+     condition: service_healthy
+   volumes:
+    - ${USERPROFILE}/.calendarapp/calendarservices/eventapi/cert/server:/https:ro
+    - ${USERPROFILE}/.calendarapp/calendarservices/eventapi/cert/trusted:/usr/local/share/ca-certificates:ro
+
+
+  calendarnotificationapi:
+   build: 
+    context: .
+    dockerfile: ./Calendar.Notification.API/Dockerfile
+   container_name: notificationapi.chronoswebsite.dev
+   image: calendar.notification.api:latest
+   restart: always
+   ports:
+    - 7271:443
+   environment:
+    - ASPNETCORE_ENVIRONMENT=Production
+    - ASPNETCORE_URLS=https://+:443
+    - ASPNETCORE_HTTPS_PORTS=7171 
+    - ASPNETCORE_Kestrel__Certificates__Default__Password=[set-cert-password]
+    - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/chronos-api.pfx
+   depends_on:
+    mssql:
+     condition: service_started
+    rabbitmq:
+     condition: service_healthy
+   volumes:
+    - ${USERPROFILE}/.calendarapp/calendarservices/notificationapi/cert/server:/https:ro
+    - ${USERPROFILE}/.calendarapp/calendarservices/notificationapi/cert/trusted:/usr/local/share/ca-certificates:ro
+
+
+  mssql:
+   build: 
+    context: "./SQL Server Db"
+    dockerfile: Dockerfile
+   container_name: calendar.db
+   image: calendar.db:latest
+   ports:
+    - 1633:1433
+   environment:
+    - MSSQL_SA_PASSWORD=[set-sqlserver-password]
+    - ACCEPT_EULA=Y 
+ 
+
+  rabbitmq:
+   build: 
+    context: ./RabbitMQ
+    dockerfile: Dockerfile
+   container_name: calendar.rabbitmq
+   image: calendar.rabbitmq:latest
+   #environment:
+   # - RABBITMQ_DEFAULT_USER=guest
+   # - RABBITMQ_DEFUALT_PASS=guest123 
+   ports:
+    - 16672:15672
+    - 5772:5672
+   healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost:15672"]
+    interval: 20s
+    timeout: 10s
+    retries: 3
+   
