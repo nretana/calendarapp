@@ -3,7 +3,7 @@ import { useAppSelector } from '@store/storeHooks';
 import { CurrentDateTime, Event, EventPosition } from '@custom-types/calendar-types';
 import { getScrollTopPosition } from '@utils/calendar-utils';
 
-import AddCalendarEvent from '../../events/AddCalendarEvent';
+import AddCalendarEvent from '../../events/addCalendarEvent/AddCalendarEvent';
 import Alert from 'react-bootstrap/Alert';
 import CalendarBoardHeader from '../calendarBoardHeader/CalendarBoardHeader';
 import CalendarEventList from '../calendarEventList/CalendarEventList';

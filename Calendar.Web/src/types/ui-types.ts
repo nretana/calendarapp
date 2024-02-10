@@ -11,3 +11,10 @@ export type DateConfig = {
     locale: string,
     timeZone: string
 }
+
+export type SlideItem = {
+    imgSrc : string,
+    imgAlt: string,
+    label: string,
+    description: string
+  }

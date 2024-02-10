@@ -1,29 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Event, EventCommand } from '@custom-types/calendar-types';
-//import { ApiResponse } from '../api-types';
 import { getPatchDocument } from '@utils/api-utils';
-
-/*interface EventRequest {
-    title: string,
-    notes: string,
-    color: string,
-    eventDate: string,
-    createdDate: string,
-    modifiedDate: string
-}
-
-interface EventResponse {
-    eventId: string,
-    title: string,
-    notes: string,
-    color: string,
-    eventDate: string,
-    createdDate: string,
-    modifiedDate: string
-}*/
-
-//<ApiResponse<EventResponse>, {selectedDate: (string | undefined)}>
-//{ data: Array<EventResponse>}
 
 export const eventApi = createApi({
     reducerPath: 'eventApi',
@@ -38,16 +15,9 @@ export const eventApi = createApi({
         getEvents: builder.query<Event[], { selectedDate?: string, startDate?: string, endDate?: string }>({
             query: (params) => {
 
-                /*const queryParams  = {
-                    ...((selectedDate !== null || selectedDate.length.trim()) && { selectedDate } ),
-                    ...((startDate !== null || startDate.length.trim()) && { startDate } ),
-                    ...((endDate !== null || endDate.length.trim()) && { endDate }),
-                }*/
-
                 return ({ url: '/events',
                           method: 'GET',
                           params
-                          //...(queryParams.length > 0 && { params: queryParams })
                         })
             },
             transformResponse: (response: Event[], meta, args) => {

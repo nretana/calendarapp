@@ -119,7 +119,7 @@ services:
     - 16672:15672
     - 5772:5672
    healthcheck:
-    test: ["CMD", "curl", "-f", "http://localhost:15672"]
+    test: ["CMD", "rabbitmqctl", "ping"]
     interval: 20s
     timeout: 10s
     retries: 3

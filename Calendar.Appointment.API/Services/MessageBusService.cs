@@ -9,14 +9,14 @@ namespace Calendar.Appointment.API.Services
     public class MessageBusService: BackgroundService
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly IOptions<MessageBusSettings> _messageBusSettings;
+        private readonly IOptions<MessageBusConfiguration> _messageBusConfiguration;
         private const string ReplyQueueName = "calendar_reply_rpc_queue";
 
 
-        public MessageBusService(IServiceScopeFactory serviceScopeFactory, IOptions<MessageBusSettings> messageBusSettings)
+        public MessageBusService(IServiceScopeFactory serviceScopeFactory, IOptions<MessageBusConfiguration> messageBusConfiguration)
         {
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-            _messageBusSettings = messageBusSettings ?? throw new ArgumentNullException(nameof(_messageBusSettings));
+            _messageBusConfiguration = messageBusConfiguration ?? throw new ArgumentNullException(nameof(_messageBusConfiguration));
 
         }
 
@@ -28,12 +28,12 @@ namespace Calendar.Appointment.API.Services
             {
                 var requesMessageBus = scope.ServiceProvider.GetRequiredService<IRequestMessageBus>();
 
-                requesMessageBus.Open(_messageBusSettings.Value.Uri);
+                requesMessageBus.Open(_messageBusConfiguration.Value.Uri);
                 requesMessageBus.CreateReplyQueue(ReplyQueueName);
 
                 var replyToQueueName = requesMessageBus.BasicProperties.ReplyTo;
 
-                requesMessageBus.SubscribeToReply<Context.Entities.Event, BasicDeliverEventArgs>(_messageBusSettings.Value.Uri, string.Empty,
+                requesMessageBus.SubscribeToReply<Context.Entities.Event, BasicDeliverEventArgs>(_messageBusConfiguration.Value.Uri, string.Empty,
                                                                 replyToQueueName, replyToQueueName).GetAwaiter();
 
             }

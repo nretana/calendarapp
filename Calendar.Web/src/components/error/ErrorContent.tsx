@@ -1,5 +1,5 @@
 
-interface ErrorContentProps {
+type ErrorContentProps = {
     title?: string,
     message?: string
 }

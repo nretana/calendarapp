@@ -18,15 +18,15 @@ namespace Calendar.Notification.API.Services
     public class NotificationService : INotificationService
     {
         private readonly IMessageBus _messageBus;
-        private readonly IOptions<MessageBusSettings> _messageBusSettings;
+        private readonly IOptions<MessageBusConfiguration> _messageBusConfiguration;
         private readonly ILogger<NotificationService> _logger;
 
         public NotificationService(IMessageBus messageBus,
-                                   IOptions<MessageBusSettings> messageBusSettings,
+                                   IOptions<MessageBusConfiguration> messageBusConfiguration,
                                    ILogger<NotificationService> logger)
         {
             _messageBus = messageBus ?? throw new ArgumentNullException(nameof(messageBus));
-            _messageBusSettings = messageBusSettings ?? throw new ArgumentNullException(nameof(messageBusSettings));
+            _messageBusConfiguration = messageBusConfiguration ?? throw new ArgumentNullException(nameof(messageBusConfiguration));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -36,12 +36,12 @@ namespace Calendar.Notification.API.Services
             try
             {
                 _logger.LogInformation($"Running background service");
-                _logger.LogInformation($"Subscribe to exchange: [{_messageBusSettings.Value.ExchangeNames["CalendarExchange"]}]," +
-                                                    $"message queue: [{_messageBusSettings.Value.QueueNames["CalendarNotificationQueue"]}]");
-                await _messageBus.Subscribe<EventNotification<EventDto>, BasicDeliverEventArgs>(_messageBusSettings.Value.Uri,
-                                                                                        _messageBusSettings.Value.ExchangeNames["CalendarExchange"],
-                                                                                        _messageBusSettings.Value.QueueNames["CalendarNotificationQueue"],
-                                                                                        _messageBusSettings.Value.QueueNames["CalendarNotificationQueue"],
+                _logger.LogInformation($"Subscribe to exchange: [{_messageBusConfiguration.Value.ExchangeNames["CalendarExchange"]}]," +
+                                                    $"message queue: [{_messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"]}]");
+                await _messageBus.Subscribe<EventNotification<EventDto>, BasicDeliverEventArgs>(_messageBusConfiguration.Value.Uri,
+                                                                                        _messageBusConfiguration.Value.ExchangeNames["CalendarExchange"],
+                                                                                        _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],
+                                                                                        _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],
                                                                                         ConsumerReceiverHandler, durable: false, deadLetterExchange: false);
             }
             catch
@@ -73,7 +73,7 @@ namespace Calendar.Notification.API.Services
             var currentChannel = ((AsyncEventingBasicConsumer)sender).Model;
             using var scope = serviceScopeFactory.CreateScope();
             var _logger = scope.ServiceProvider.GetRequiredService<ILogger<NotificationService>>();
-
+            var _userEmailConfig = scope.ServiceProvider.GetRequiredService<IOptions<UserEmailConfiguration>>().Value;
 
             try
             {
@@ -81,7 +81,7 @@ namespace Calendar.Notification.API.Services
                 var bytesResult = args.Body.ToArray();
                 var eventNotification = JsonConvert.DeserializeObject<EventNotification<EventDto>>(Encoding.UTF8.GetString(bytesResult));
                 
-                var message = CreateEmailMessage(eventNotification);
+                var message = CreateEmailMessage(eventNotification, _userEmailConfig);
                 var _emailservice = scope.ServiceProvider.GetRequiredService<IEmailSender>();
                 _emailservice.SendEmailAsync(message).GetAwaiter();
 
@@ -92,14 +92,24 @@ namespace Calendar.Notification.API.Services
                 //rejects the message
                 currentChannel.BasicReject(args.DeliveryTag, false);
                 
-                _logger.LogError($"Error proccessing dta from message queue bound to exchange [{args.Exchange}]: {ex}");
+                _logger.LogError($"Error proccessing data from message queue bound to exchange [{args.Exchange}]: {ex}");
                 throw;
             }
             return Task.CompletedTask;
         }
 
-        private static EmailMessage CreateEmailMessage(EventNotification<EventDto> eventNotification)
+
+        /// <summary>
+        /// TODO: user data is comming from configuration file. 
+        /// It will be replaced by the integration of Identity Web API
+        /// </summary>
+        /// <param name="eventNotification"></param>
+        /// <returns></returns>
+        private static EmailMessage CreateEmailMessage(EventNotification<EventDto> eventNotification, UserEmailConfiguration userEmail)
         {
+            ArgumentException.ThrowIfNullOrEmpty(userEmail.UserName);
+            ArgumentException.ThrowIfNullOrEmpty(userEmail.UserEmail);
+
             var htmlTemplateStr = EmailHelper.BuildEmailTemplate("Utilities/Templates", "NotificationTemplate.html");
 
             var htmlMessage = string.Format(GetMessageByEventOperationType(eventNotification.EventOperationType), 
@@ -107,9 +117,9 @@ namespace Calendar.Notification.API.Services
                                                                                 eventNotification.CurrentData?.EventDate.ToString("dddd, dd MMMM yyyy"),
                                                                                 eventNotification.CurrentData?.StartTime.ToString("hh:mm tt"));
             
-            var emailBody = htmlTemplateStr.Replace("[UserName]", "username")
+            var emailBody = htmlTemplateStr.Replace("[UserName]", userEmail?.UserName)
                                            .Replace("[EventNotificationMessage]", htmlMessage)
-                                           .Replace("[UserEmail]", "username@gmail.com")
+                                           .Replace("[UserEmail]", userEmail?.UserEmail)
                                            .Replace("[AppName]", "Chronos");
 
             /*List<EmailAttachment> emailAttachList = new() {
@@ -118,7 +128,7 @@ namespace Calendar.Notification.API.Services
 
             var linkedResources = new Dictionary<string, string>() { { "[BrandImgSrc]", "Utilities/Templates/Imgs/brand_logo.png" } };
 
-            var message = new EmailMessage(new string[] { "username@gmail.com" },
+            var message = new EmailMessage(new string[] { userEmail.UserEmail },
                                                           subject: "Event Notification",
                                                           body: emailBody,
                                                           linkedResources: linkedResources);

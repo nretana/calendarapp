@@ -1,10 +1,15 @@
 
 using Calendar.Notification.API.Configuration;
+using Calendar.Notification.API.Extensions;
+using Calendar.Notification.API.Models;
 using Calendar.Notification.API.Services;
 using Calendar.Shared.Email;
 using Calendar.Shared.MessageBus.PubSub;
 using Calendar.Shared.MessageBus.RequestReply;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 using Serilog;
+using System.Globalization;
 using System.Net;
 
 namespace Calendar.Notification.API
@@ -29,9 +34,12 @@ namespace Calendar.Notification.API
             builder.Services.AddOptions<EmailConfiguration>().BindConfiguration("EmailConfiguration")
                                                              .ValidateDataAnnotations()
                                                              .ValidateOnStart();
-            builder.Services.AddOptions<MessageBusSettings>().BindConfiguration("MessageBusSettings")
-                                                             .ValidateDataAnnotations()
-                                                             .ValidateOnStart();
+            builder.Services.AddOptions<MessageBusConfiguration>().BindConfiguration("MessageBusConfiguration")
+                                                                  .ValidateDataAnnotations()
+                                                                  .ValidateOnStart();
+            builder.Services.AddOptions<UserEmailConfiguration>().BindConfiguration("UserEmailConfiguration")
+                                                                 .ValidateDataAnnotations()  
+                                                                 .ValidateOnStart();
 
             // Add services to the container.
 
@@ -47,7 +55,7 @@ namespace Calendar.Notification.API
             builder.Services.AddScoped<IResponseMessageBus, ResponseMessageBus>();
             builder.Services.AddScoped<INotificationService, NotificationService>();
 
-
+        
             //add curstom certificates to kestrel
             if (builder.Environment.IsDevelopment())
             {

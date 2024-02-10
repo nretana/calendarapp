@@ -4,7 +4,7 @@ import { Event, EventBoard } from '@custom-types/calendar-types';
 
 import { getGridPosition, getIndexByTime } from '@utils/calendar-utils';
 
-export interface AppointmentBoardState {
+export type AppointmentBoardState = {
     eventList: Event[],
     eventBoardList: EventBoard[]
 }

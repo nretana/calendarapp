@@ -6,15 +6,17 @@ using Calendar.Shared.MessageBus.RequestReply;
 using Calendar.Appointment.API.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options => 
             options.UseSqlServer(builder.Configuration["ConnectionString:CalendarDb"]));
 
-builder.Services.AddOptions<MessageBusSettings>().BindConfiguration("MessageBusSettings")
-                                 .ValidateDataAnnotations()
-                                 .ValidateOnStart();
+builder.Services.AddOptions<MessageBusConfiguration>().BindConfiguration("MessageBusConfiguration")
+                                                      .ValidateDataAnnotations()
+                                                      .ValidateOnStart();
 
 // Add services to the container.
 

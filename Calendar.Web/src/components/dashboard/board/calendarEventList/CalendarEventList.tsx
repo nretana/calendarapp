@@ -7,16 +7,30 @@ import { weeklyCalendarBoardActions } from '@store/slices/weeklyCalendarBoardSli
 
 import { useGetEventsQuery } from '@store/services/events/eventApi'
 
-import ViewCalendarEvent from '../../events/ViewCalendarEvent';
-import SkeletonGrid from '../../../skeletons/SkeletonGrid';
+import ViewCalendarEvent from '../../events/viewCalendarEvent/ViewCalendarEvent';
+import SkeletonGrid from '@components/skeletons/SkeletonGrid';
+
 
 import './CalendarEventList.scss';
 
-interface CalendarEventListProps {
+type CalendarEventListProps = {
     setIsShowEvent: React.Dispatch<React.SetStateAction<boolean>>,
     setCurrentEvent: React.Dispatch<React.SetStateAction<Event | null | undefined>>,
     setCurrentEventPosition: React.Dispatch<React.SetStateAction<EventPosition>>,
     setCurrentDateTime: React.Dispatch<React.SetStateAction<CurrentDateTime>>
+}
+
+type CalendarGridItemAttr = {
+    key: string,
+    id: string,
+    tabIndex: number,
+    ariaSelected?: boolean
+    className: string,
+    dataEventId?: string,
+    style?: React.CSSProperties
+    onClick: (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => void,
+    onKeyDown: (e: React.KeyboardEvent<HTMLLIElement>) => void,
+    ref: React.LegacyRef<HTMLLIElement>
 }
 
 const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, setCurrentEvent, setCurrentEventPosition, setCurrentDateTime }) => {
@@ -82,7 +96,7 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
 
     const onKeyDownHandler = (e: React.KeyboardEvent<HTMLLIElement>, row: number, col: number) => {
 
-       
+   
         //if key pressed is not in the list, skip the process
         if(!allowedKeyboardKeys.includes(e.key)){
             return;
@@ -103,6 +117,7 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
             { isEventGridAllowed() &&
             <ol className='grid-event'>
                 {weekEventBoardList.map((eventBoardRow: EventBoard[], rowIndex: number) => {
+
                     return <React.Fragment key={`grid_event_${rowIndex}`}>
                             { eventBoardRow.map((eventBoard: EventBoard, colIndex: number) => {
 
@@ -123,29 +138,30 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
                                     tabIndex = currentRef?.tabIndex ?? tabIndex;
                                 }
 
-                                if(eventFound !== null && !eventBoard.isSpanRow){
-                                    return <li key={key}
-                                            id={key}
-                                            tabIndex={(isSetTabIndexOnFirstElem) ? 0 : tabIndex}
-                                            {...(tabIndex === 0 ? { 'aria-selected': 'true'} : {})}
-                                            className='app-item unavailable-item'
-                                            data-event-id={eventFound?.eventId}
-                                            onClick={(e) => onClickTimeHandler(e, rowIndex, colIndex, eventFound)}
-                                            ref={ (item) => refCurrentEventBoardList.current.push(item) }
-                                            onKeyDown={(e) => onKeyDownHandler(e, rowIndex, colIndex)}
-                                            style={{ gridRowStart: eventBoard?.gridStart, gridRowEnd: eventBoard?.gridEnd, gridColumn: eventBoard?.gridColumn }}>
-                                                    { eventFound !== null && <ViewCalendarEvent event={eventFound} currentIndex={colIndex} /> }
-                                            </li>
+                                const gridItemAttributes : CalendarGridItemAttr = {
+                                    key: key,
+                                    id: key,
+                                    tabIndex: (isSetTabIndexOnFirstElem) ? 0 : tabIndex,
+                                    className: `app-item available-item ${hideClass}`,
+                                    onClick:(e) => onClickTimeHandler(e, rowIndex, colIndex, eventFound),
+                                    onKeyDown: (e) => onKeyDownHandler(e, rowIndex, colIndex),
+                                    ref: (item) => refCurrentEventBoardList.current.push(item)
                                 }
 
-                                return <li key={key}
-                                        id={key}
-                                        tabIndex={(isSetTabIndexOnFirstElem) ? 0 : tabIndex}
-                                        {...(tabIndex === 0 ? { 'aria-selected': 'true'} : {})}
-                                        className={`app-item available-item ${hideClass}`}
-                                        onClick={(e) => onClickTimeHandler(e, rowIndex, colIndex, eventFound)}
-                                        ref={ (item) => refCurrentEventBoardList.current.push(item) }
-                                        onKeyDown={(e) => onKeyDownHandler(e, rowIndex, colIndex)}></li>
+                                if(tabIndex === 0){
+                                    gridItemAttributes.ariaSelected = true;
+                                }
+
+                                if(eventFound !== null && !eventBoard.isSpanRow){
+                                    gridItemAttributes.style = { gridRowStart: eventBoard?.gridStart, gridRowEnd: eventBoard?.gridEnd, gridColumn: eventBoard?.gridColumn };
+
+                                    return <li { ...gridItemAttributes} data-event-id={eventFound?.eventId}>
+                                             { eventFound !== null && <ViewCalendarEvent event={eventFound} 
+                                                                                         currentIndex={colIndex} /> }
+                                           </li>
+                                }
+
+                                return <li {...gridItemAttributes}></li>
                             })}
                         </React.Fragment>
                 })}

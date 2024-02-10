@@ -2,7 +2,7 @@
 import { Button } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 
-interface ModalProps {
+type ModalProps = {
     isShow: boolean
 }
 

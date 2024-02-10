@@ -19,15 +19,15 @@ namespace Calendar.Appointment.API.Controllers
         private readonly IEventService _eventCalendar;
         private readonly IMapper _mapper;
         private readonly IMessageBus _messageBus;
-        private readonly IOptions<MessageBusSettings> _messageBusSettings;
+        private readonly IOptions<MessageBusConfiguration> _messageBusConfiguration;
 
         public EventController(IEventService eventCalendar, IMapper mapper, IMessageBus messageBus, 
-                                           IOptions<MessageBusSettings> messageBusSettings)
+                                           IOptions<MessageBusConfiguration> messageBusConfiguration)
         {
             _eventCalendar = eventCalendar ?? throw new ArgumentNullException(nameof(eventCalendar));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _messageBus = messageBus ?? throw new ArgumentNullException(nameof(messageBus));
-            _messageBusSettings = messageBusSettings ?? throw new ArgumentNullException(nameof(messageBusSettings));
+            _messageBusConfiguration = messageBusConfiguration ?? throw new ArgumentNullException(nameof(MessageBusConfiguration));
         }
 
         [HttpGet(Name = "GetEvents")]
@@ -78,10 +78,10 @@ namespace Calendar.Appointment.API.Controllers
 
             var eventNotification = new EventNotification<EventDto>() { CurrentData = eventAdded, 
                                                                         EventOperationType = EventOperationType.Add };
-            _messageBus.Publish(eventNotification, _messageBusSettings.Value.Uri, 
-                                            _messageBusSettings.Value.ExchangeNames["CalendarExchange"], 
-                                            _messageBusSettings.Value.QueueNames["CalendarNotificationQueue"], 
-                                            _messageBusSettings.Value.QueueNames["CalendarNotificationQueue"]);
+            _messageBus.Publish(eventNotification, _messageBusConfiguration.Value.Uri, 
+                                                   _messageBusConfiguration.Value.ExchangeNames["CalendarExchange"], 
+                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"], 
+                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"]);
 
             return CreatedAtRoute("GetEvent", new { EventId = eventAdded.EventId }, eventAdded);
         }
@@ -113,10 +113,10 @@ namespace Calendar.Appointment.API.Controllers
                 CurrentData = _mapper.Map<EventDto>(eventFound),
                 EventOperationType = EventOperationType.Update
             };
-            _messageBus.Publish(eventNotification, _messageBusSettings.Value.Uri,
-                                            _messageBusSettings.Value.ExchangeNames["CalendarExchange"],
-                                            _messageBusSettings.Value.QueueNames["CalendarNotificationQueue"],
-                                            _messageBusSettings.Value.QueueNames["CalendarNotificationQueue"]);
+            _messageBus.Publish(eventNotification, _messageBusConfiguration.Value.Uri,
+                                                   _messageBusConfiguration.Value.ExchangeNames["CalendarExchange"],
+                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],
+                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"]);
 
             return NoContent();
         }
@@ -148,10 +148,10 @@ namespace Calendar.Appointment.API.Controllers
                 EventOperationType = EventOperationType.Update
             };
 
-            _messageBus.Publish(eventNotification, _messageBusSettings.Value.Uri,
-                                            _messageBusSettings.Value.ExchangeNames["CalendarExchange"],
-                                            _messageBusSettings.Value.QueueNames["CalendarNotificationQueue"],
-                                            _messageBusSettings.Value.QueueNames["CalendarNotificationQueue"]);
+            _messageBus.Publish(eventNotification, _messageBusConfiguration.Value.Uri,
+                                                   _messageBusConfiguration.Value.ExchangeNames["CalendarExchange"],
+                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],
+                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"]);
 
             return NoContent();
         }

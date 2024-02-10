@@ -1,15 +1,15 @@
-export interface CurrentDateTime {
+export type CurrentDateTime = {
     day: number,
     hour: number,
     minute: number
 }
 
-export interface EventPosition {
+export type EventPosition = {
     row: number,
     column: number
 }
 
-export interface Event {
+export type Event = {
     eventId: string,
     title: string,
     notes: string,
@@ -21,7 +21,7 @@ export interface Event {
     modifiedDate: string
 }
 
-export interface EventCommand {
+export type EventCommand = {
     title: string,
     notes: string,
     color: string,
@@ -30,7 +30,7 @@ export interface EventCommand {
     eventDate: string
 }
 
-export interface EventBoard {
+export type EventBoard = {
     event: Event | null,
     indexBoard: number, 
     gridStart: string,
@@ -39,13 +39,13 @@ export interface EventBoard {
     isSpanRow: boolean,
 }
 
-export interface WeekDay {
+export type WeekDay = {
     day: number,
     date: string,
     dayLabel: string
 }
 
-export interface WeekDaysCalendar {
+export type WeekDaysCalendar = {
     daysWeekList: Array<WeekDay>
     setDaysWeekList: (date: string) => Array<WeekDay>
 }

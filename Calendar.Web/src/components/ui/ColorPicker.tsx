@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Radio, FieldError } from 'react-aria-components';
+import React from 'react';
+import { Radio } from 'react-aria-components';
 import RadioGroup from '../core/RadioGroup';
 
 
 import './ColorPicker.scss';
 
-interface ColorPickerProps {
+type ColorPickerProps = {
     id?: string,
     colors: string[],
     color: string,

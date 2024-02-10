@@ -5,7 +5,7 @@ import { getDaysOfWeek } from '@utils/calendar-utils';
 import { format } from 'date-fns';
 import { dateConfig } from '@config/date-config';
 
-interface CalendarState {
+type CalendarState = {
     selectedDate: string,
     selectedWeekList: WeekDay[]
 }

@@ -1,0 +1,48 @@
+@import '../../../../assets/scss/core/functions';
+@import '../../../../assets/scss/core/variables';
+
+.slider-content {
+    margin-top: 1.5rem;
+    text-align: end;
+
+    .slider-current-slide {
+        opacity: 0;
+       &.fade-in { 
+         animation: fadeIn 5s ease 0s 1 normal both;
+       }
+    }
+
+    .slider-items {
+        //scroll-snap-type: x mandatory;
+        //flex-wrap: nowrap;
+    }
+
+    .slider-control {
+        margin-top: 2.5rem;
+
+        .slider-btn {
+            background-color: $accent-color;
+            border-radius: 50% 50%;
+            width: 4rem;
+            height: 4rem;
+            border: 0;
+
+            &:hover, &:focus {
+                outline: 0;
+                border-color: #afebd2;
+                box-shadow: 0 0 0 0.25rem rgba(94, 214, 164, 0.35);
+                box-shadow: 0 0 0 0.25rem rgba($accent-color, .5);
+            }
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

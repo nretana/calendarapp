@@ -15,14 +15,14 @@ namespace Calendar.Appointment.API.Services
     {
         private readonly AppDbContext _context;
         private readonly IRequestMessageBus _requestMessageBus;
-        private readonly IOptions<MessageBusSettings> _messageBusSettings;
+        private readonly IOptions<MessageBusConfiguration> _messageBusConfiguration;
         private const string _replyQueueName = "calendar_reply_rpc_queue";
 
         public EventService(AppDbContext context, IRequestMessageBus requestMessageBus, 
-                                    IOptions<MessageBusSettings> messageBusSettings) {
+                                    IOptions<MessageBusConfiguration> messageBusConfiguration) {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _requestMessageBus = requestMessageBus ?? throw new ArgumentNullException(nameof(requestMessageBus));
-            _messageBusSettings = messageBusSettings ?? throw new ArgumentNullException(nameof(messageBusSettings));
+            _messageBusConfiguration = messageBusConfiguration ?? throw new ArgumentNullException(nameof(messageBusConfiguration));
 
             ReplyToSubscriber().GetAwaiter();
         }
@@ -118,10 +118,10 @@ namespace Calendar.Appointment.API.Services
         {
             try
             {
-                var result = await _requestMessageBus.Publish(@event, _messageBusSettings.Value.Uri,
-                                                   _messageBusSettings.Value.ExchangeNames["CalendarRpcExchange"],
-                                                   _messageBusSettings.Value.QueueNames["CalendarRpcQueue"],
-                                                   _messageBusSettings.Value.QueueNames["CalendarRpcQueue"], null, cancellationToken);
+                var result = await _requestMessageBus.Publish(@event, _messageBusConfiguration.Value.Uri,
+                                                                      _messageBusConfiguration.Value.ExchangeNames["CalendarRpcExchange"],
+                                                                      _messageBusConfiguration.Value.QueueNames["CalendarRpcQueue"],
+                                                                      _messageBusConfiguration.Value.QueueNames["CalendarRpcQueue"], null, cancellationToken);
 
                 return result as Event;
             }
@@ -134,9 +134,9 @@ namespace Calendar.Appointment.API.Services
 
         public async Task ReplyToSubscriber()
         {
-            _requestMessageBus.Open(_messageBusSettings.Value.Uri);
+            _requestMessageBus.Open(_messageBusConfiguration.Value.Uri);
             _requestMessageBus.CreateReplyQueue(_replyQueueName);
-            await _requestMessageBus.SubscribeToReply<Event, BasicDeliverEventArgs>(_messageBusSettings.Value.Uri, string.Empty,
+            await _requestMessageBus.SubscribeToReply<Event, BasicDeliverEventArgs>(_messageBusConfiguration.Value.Uri, string.Empty,
                                                             _replyQueueName, _replyQueueName);
         }
     }

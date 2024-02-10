@@ -1,10 +1,10 @@
-import Brand from './sections/Brand';
-import Business from './sections/Business';
-import Services from './sections/Services';
-import Benefits from './sections/Benefits';
-import Customers from './sections/Customers';
-import Testimonies from './sections/Testimonies';
-import Faq from './sections/Faq';
+import Brand from './/brand/Brand';
+import Business from './/business/Business';
+import Services from './/services/Services';
+import Benefits from './/benefits/Benefits';
+import Customers from './/customer/Customers';
+import Testimonies from './/testimonies/Testimonies';
+import Faq from './/faq/Faq';
 
 import GridBg from './GridBg';
 

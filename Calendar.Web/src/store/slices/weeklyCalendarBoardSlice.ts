@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Event, EventBoard, EventPosition, WeekDay } from '@custom-types/calendar-types';
 import { getGridPosition, getIndexByTime, getDatesByWeekList } from '@utils/calendar-utils';
 
-export interface AppointmentBoardState {
+export type AppointmentBoardState = {
     eventList: Event[],
     eventBoardList: EventBoard[][],
     isLoadingEventBoard: boolean,
