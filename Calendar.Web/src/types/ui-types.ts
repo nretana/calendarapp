@@ -7,6 +7,7 @@ export type RadioOption = {
 export type DateConfig = {
     isoDateFormat: string,
     longDateFormat: string,
+    longDateTimeFormat: string,
     dateTimeOffSetFormat: string,
     locale: string,
     timeZone: string

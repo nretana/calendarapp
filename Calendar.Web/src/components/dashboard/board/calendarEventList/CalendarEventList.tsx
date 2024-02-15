@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '@store/storeHooks';
 import { CurrentDateTime, Event, EventBoard, EventPosition } from '@custom-types/calendar-types';
 import { allowedKeyboardKeys } from '@custom-types/constants';
-import { eventBoardAccessibility } from '@utils/ui-utils';
+import { eventBoardAccessibility, getDateTimeLabel, resetBoardAccessibility } from '@utils/ui-utils';
 import { weeklyCalendarBoardActions } from '@store/slices/weeklyCalendarBoardSlice';
 
 import { useGetEventsQuery } from '@store/services/events/eventApi'
@@ -17,23 +17,30 @@ type CalendarEventListProps = {
     setIsShowEvent: React.Dispatch<React.SetStateAction<boolean>>,
     setCurrentEvent: React.Dispatch<React.SetStateAction<Event | null | undefined>>,
     setCurrentEventPosition: React.Dispatch<React.SetStateAction<EventPosition>>,
-    setCurrentDateTime: React.Dispatch<React.SetStateAction<CurrentDateTime>>
+    setCurrentDateTime: React.Dispatch<React.SetStateAction<CurrentDateTime>>,
+    currentEventPosition: EventPosition
+
 }
 
 type CalendarGridItemAttr = {
     key: string,
     id: string,
     tabIndex: number,
-    ariaSelected?: boolean
+    role: string,
     className: string,
     dataEventId?: string,
+    ['aria-label']: string,
+    ['aria-selected']?: boolean
+    ['aria-rowindex']: number,
+    ['aria-colindex']: number,
+    ['data-row']: number,
+    ['data-col']: number,
+    ['data-has-event']: boolean,
     style?: React.CSSProperties
-    onClick: (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => void,
-    onKeyDown: (e: React.KeyboardEvent<HTMLLIElement>) => void,
-    ref: React.LegacyRef<HTMLLIElement>
+    onClick: (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => void
 }
 
-const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, setCurrentEvent, setCurrentEventPosition, setCurrentDateTime }) => {
+const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, setCurrentEvent, setCurrentEventPosition, setCurrentDateTime, currentEventPosition }) => {
 
     const dispatch = useAppDispatch();
     const selectedDate = useAppSelector(state => state.calendarPicker.selectedDate);
@@ -41,7 +48,7 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
     const weekEventBoardList = useAppSelector(state => state.weeklyCalendarBoard.eventBoardList);
     const isLoadingEventBoard = useAppSelector(state => state.weeklyCalendarBoard.isLoadingEventBoard);
     const isErrorEventBoard = useAppSelector(state => state.weeklyCalendarBoard.isErrorEventBoard);
-    const refCurrentEventBoardList = useRef<(HTMLLIElement | null)[]>([]);
+    const refEventGrid = useRef<HTMLOListElement | null>(null);
 
     const startDate = selectedWeekList[0].date;
     const endDate = selectedWeekList[selectedWeekList.length -1].date;
@@ -67,7 +74,7 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
         return (!isFetching && !isLoadingEventBoard && !isErrorEventBoard && isSuccess);
     }
 
-    const isStateLoad = (): boolean =>{
+    const isLoadState = (): boolean =>{
         return (isLoading || isFetching || isLoadingEventBoard);
     }
 
@@ -88,77 +95,76 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
             minute: currentMinutes
         }
 
-        setCurrentEventPosition({ row: rowIndex, column: colIndex })
+        setCurrentEventPosition({ row: rowIndex, column: colIndex });
         setCurrentDateTime({ ...newCurrentDateTime });
         event !== null ? setCurrentEvent(event) : setCurrentEvent(null);
         setIsShowEvent(prevState => !prevState);
+
+        resetBoardAccessibility(refEventGrid);
     }
 
-    const onKeyDownHandler = (e: React.KeyboardEvent<HTMLLIElement>, row: number, col: number) => {
-
-   
-        //if key pressed is not in the list, skip the process
+    const onKeyDownEventGridHandler = (e: React.KeyboardEvent<HTMLOListElement>) => {
+        
         if(!allowedKeyboardKeys.includes(e.key)){
             return;
         }
-        
-        //if key pressed is comming from other html elements, skip the process
-        if(e.target !== e.currentTarget){
-            return;
-        }
-        
+
         e.preventDefault();
         e.stopPropagation();
-        eventBoardAccessibility(e.key, refCurrentEventBoardList, row, col);
+        var currentElem = e.target as HTMLLIElement;
+        eventBoardAccessibility(e.key, currentElem, refEventGrid);
     }
 
     return (<>
-            { isStateLoad() && <SkeletonGrid /> }
+            { isLoadState() && <SkeletonGrid /> }
             { isEventGridAllowed() &&
-            <ol className='grid-event'>
-                {weekEventBoardList.map((eventBoardRow: EventBoard[], rowIndex: number) => {
-
-                    return <React.Fragment key={`grid_event_${rowIndex}`}>
-                            { eventBoardRow.map((eventBoard: EventBoard, colIndex: number) => {
+              <ol className='grid-event' 
+                  tabIndex={-1} 
+                  role='grid'
+                  aria-rowcount={96}
+                  aria-colcount={7}
+                  ref={refEventGrid} 
+                  onKeyDown={(e) => onKeyDownEventGridHandler(e)}>
+                  { weekEventBoardList.map((eventBoardRow: EventBoard[], rowIndex: number) => {
+                     return <React.Fragment key={`grid_event_${rowIndex}`}>
+                             { eventBoardRow.map((eventBoard: EventBoard, colIndex: number) => {
 
                                 const key = `app_${(rowIndex + 1)}_${(colIndex + 1)}`;
                                 const eventFound = eventBoard.event;
                                 const hideClass = eventBoard?.isSpanRow ? 'hide': '';
-
-                                let currentRef = null;
-                                let tabIndex = -1;
-                                let isSetTabIndexOnFirstElem = false;
-                                if(refCurrentEventBoardList !== null){
-                                    //current element with focus (if there's no one, set the tab index in the first cell)
-                                    const selectedElementIndex = refCurrentEventBoardList.current.findIndex(el => el?.tabIndex === 0);
-                                    isSetTabIndexOnFirstElem = selectedElementIndex === -1 && rowIndex === 0 && colIndex === 0;
-
-                                    //gets the tabIndex value if the element already has it
-                                    currentRef = refCurrentEventBoardList.current[(rowIndex*7) + colIndex];
-                                    tabIndex = currentRef?.tabIndex ?? tabIndex;
-                                }
+                                const ariaLabel = getDateTimeLabel(rowIndex, colIndex, selectedWeekList);
 
                                 const gridItemAttributes : CalendarGridItemAttr = {
                                     key: key,
                                     id: key,
-                                    tabIndex: (isSetTabIndexOnFirstElem) ? 0 : tabIndex,
+                                    tabIndex: -1,
+                                    role: 'gridcell',
                                     className: `app-item available-item ${hideClass}`,
-                                    onClick:(e) => onClickTimeHandler(e, rowIndex, colIndex, eventFound),
-                                    onKeyDown: (e) => onKeyDownHandler(e, rowIndex, colIndex),
-                                    ref: (item) => refCurrentEventBoardList.current.push(item)
+                                    ['aria-label']: ariaLabel,
+                                    ['aria-rowindex']: (rowIndex + 1),
+                                    ['aria-colindex']: (colIndex + 1),
+                                    ['data-row']: rowIndex,
+                                    ['data-col']: colIndex,
+                                    ['data-has-event']: eventFound !== null,
+                                    onClick:(e) => onClickTimeHandler(e, rowIndex, colIndex, eventFound)
                                 }
 
-                                if(tabIndex === 0){
-                                    gridItemAttributes.ariaSelected = true;
+                                if(currentEventPosition.row === rowIndex && 
+                                   currentEventPosition.column === colIndex){
+                                    gridItemAttributes.tabIndex = 0;
+                                    gridItemAttributes['aria-selected'] = true;
                                 }
 
                                 if(eventFound !== null && !eventBoard.isSpanRow){
-                                    gridItemAttributes.style = { gridRowStart: eventBoard?.gridStart, gridRowEnd: eventBoard?.gridEnd, gridColumn: eventBoard?.gridColumn };
+                                    gridItemAttributes.style = { gridRowStart: eventBoard?.gridStart, 
+                                                                 gridRowEnd: eventBoard?.gridEnd, 
+                                                                 gridColumn: eventBoard?.gridColumn 
+                                };
 
-                                    return <li { ...gridItemAttributes} data-event-id={eventFound?.eventId}>
-                                             { eventFound !== null && <ViewCalendarEvent event={eventFound} 
-                                                                                         currentIndex={colIndex} /> }
-                                           </li>
+                                return <li { ...gridItemAttributes} data-event-id={eventFound?.eventId}>
+                                          { eventFound !== null && <ViewCalendarEvent event={eventFound} 
+                                                                                      currentIndex={colIndex} /> }
+                                        </li>
                                 }
 
                                 return <li {...gridItemAttributes}></li>

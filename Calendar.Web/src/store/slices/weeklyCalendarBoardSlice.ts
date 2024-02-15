@@ -28,7 +28,7 @@ const initialState : AppointmentBoardState = {
     isErrorEventBoard: false
 }
 
-/** calculation for grid position is from 1 to n and NOT starting from zero */
+/** calculation for grid CSS position is from 1 to n and NOT starting from zero */
 const addEventToCalendarBoard = (eventPosition: EventPosition, event: Event, eventBoardList: EventBoard[][]) : EventBoard[][]  => {
     const indexBoard = getIndexByTime(event.startTime);
     const updateEventBoardList = [...eventBoardList];
@@ -109,7 +109,7 @@ const weeklyCalendarBoardSlice = createSlice({
 
         fillEventBoard: (state, action: PayloadAction<{ weekList: WeekDay[], eventList: Event[] }>) => {
 
-            const eventList = action.payload.eventList;//[...state.eventList];
+            const eventList = action.payload.eventList;
             const eventListBoard = [...state.eventBoardList];
             const currentWeekList = action.payload.weekList;
             
@@ -141,5 +141,3 @@ const weeklyCalendarBoardSlice = createSlice({
 
 export const weeklyCalendarBoardActions = weeklyCalendarBoardSlice.actions;
 export default weeklyCalendarBoardSlice;
-
-

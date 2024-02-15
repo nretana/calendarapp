@@ -61,7 +61,8 @@ const CalendarBoard: React.FC = () => {
                             <CalendarEventList setIsShowEvent={setIsShowEvent} 
                                             setCurrentEvent={setCurrentEvent} 
                                             setCurrentEventPosition={setCurrentEventPosition} 
-                                            setCurrentDateTime={setCurrentDateTime} />
+                                            setCurrentDateTime={setCurrentDateTime}
+                                            currentEventPosition={currentEventPosition} />
                         </div>
                 </div>
             </div>

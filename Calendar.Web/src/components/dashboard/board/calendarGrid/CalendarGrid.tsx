@@ -6,7 +6,7 @@ const CalendarGrid: React.FC = () => {
   const timeArr = Array<number[]>(24).fill(Array<number>(8).fill(0));
 
   return (
-    <div className='grid-time'>
+    <div className='grid-time' tabIndex={-1}>
         {timeArr.map((daysArr: number[], timeIndex: number) => {
             const timeKey = `grid_time_${timeIndex + 1}`;
             return (

@@ -27,7 +27,6 @@ export const eventApi = createApi({
                 return response;
             },
             transformErrorResponse: (response, meta, args) => {
-                //console.log('ERROR', response);
                 return response;
             }
         }),
