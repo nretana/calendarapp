@@ -11,14 +11,13 @@ A calendar app for tracking your appointments.
 
 <br />
 <div align="center">
-  <img src="mkdimgs/landingpage.png" alt="Landing Page" width="830" height="440.23">
-  <br />
-  <br />
-  <img src="mkdimgs/homepagesection.png" alt="Section in Home Page" width="830" height="497">
-  <br />
-  <br />
-  <img src="mkdimgs/weeklycalendar.png" alt="Weekly Calendar" width="830" height="379.54">
-  <br />
+
+https://github.com/nretana/calendarapp/assets/94148180/9932892e-4281-42c2-8f10-fb8b9e206dd3
+
+
+
+https://github.com/nretana/calendarapp/assets/94148180/6ac5b8d0-47b3-4680-b8f2-8145de7f3c15
+
 </div>
 
 ## Tech Stack
