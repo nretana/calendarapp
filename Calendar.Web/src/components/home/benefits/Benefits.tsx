@@ -3,7 +3,8 @@ import calendarBoardAccessibilityImg from '@assets/imgs/calendar_board_accessibi
 
 import './Benefits.scss';
 
-const bullets = ['Our calendar support accessibility features.'];
+const bullets = ['Our calendar support web accessibility features.',
+                 'Easy to navigate.'];
 
 const Benefits = () => {
   return (<>

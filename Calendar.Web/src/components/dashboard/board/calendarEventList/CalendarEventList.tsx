@@ -111,7 +111,7 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
 
         e.preventDefault();
         e.stopPropagation();
-        var currentElem = e.target as HTMLLIElement;
+        const currentElem = e.target as HTMLLIElement;
         eventBoardAccessibility(e.key, currentElem, refEventGrid);
     }
 

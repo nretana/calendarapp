@@ -171,6 +171,12 @@
         $active-border: $secondary-color,
         $active-color: $white
       );
+
+      &:hover {
+        animation: btn-dark-hover 1s;
+        box-shadow: 0 0 0 0.5em transparent;
+      }
+      
     } @else {
       @include button-variant($background: $value, 
                               $border: $value);
@@ -204,6 +210,7 @@
   --#{$prefix}btn-disabled-border-color: transparent;
   --#{$prefix}btn-box-shadow: 0 0 0 #000; // Can't use `none` as keyword negates all values when used with multiple shadows
   --#{$prefix}btn-focus-shadow-rgb: #{$btn-link-focus-shadow-rgb};
+  border: 0;
 
   text-decoration: $link-decoration;
   @if $enable-gradients {
@@ -220,12 +227,39 @@
   }
 
   &:hover {
-    color: var(--#{$prefix}btn-hover-color);
+    animation: btn-dark-hover 1.2s;
+    box-shadow: 0 0 0 0.5rem transparent;
+    transform: translateZ(0);
   }
 
   // No need for an active state here
 }
 
+// Make a roundedbutton
+.btn-round {
+  @include button-round-variant(
+    $background: $accent-color,
+    $border: $accent-color,
+    $color: $secondary-color,
+    $hover-background: $accent-color-shade-500,
+    $hover-border: $accent-color-shade-500,
+    $hover-color: $accent-color,
+    $active-background: $accent-color-shade-500,
+    $active-border: $accent-color-shade-500,
+    $active-color: $accent-color
+  );
+
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50% 50%;
+  padding: 0;
+
+  &:hover {
+      animation: btn-light-hover 1.2s;
+      box-shadow: 0 0 0 0.5rem transparent;
+      transform: translateZ(0);
+  }
+}
 
 //
 // Button Sizes
@@ -237,4 +271,13 @@
 
 .btn-sm {
   @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-border-radius-sm);
+}
+
+
+@keyframes btn-dark-hover {
+  0% { box-shadow: 0 0 0 0 $secondary-color }
+}
+
+@keyframes btn-light-hover {
+  0% { box-shadow: 0 0 0 0 $accent-color }
 }

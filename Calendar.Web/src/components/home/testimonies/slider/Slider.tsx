@@ -53,13 +53,6 @@ const sliderItemList: SlideItem[] = [
   }
 ];
 
-type SlideAttributes = {
-  imgSrc: string,
-  imgAlt: string,
-  label: string, 
-  description: string,
-  scrollSnapAlign: string
-}
 
 const Slider: React.FC = () => {
 
@@ -83,10 +76,10 @@ const Slider: React.FC = () => {
                   </div>
               </div>
              <div className='slider-control'>
-               <button type='button' className='slider-btn me-3' onClick={() => prevSlide()}>
+               <button type='button' className='btn btn-round me-3' onClick={() => prevSlide()}>
                  <img src={ChevronLeft} alt='prev slide' width={35} height={35} />
                </button>
-               <button type='button' className='slider-btn' onClick={() => nextSlide()}>
+               <button type='button' className='btn btn-round' onClick={() => nextSlide()}>
                  <img src={ChevronRight} alt='next slide' width={35} height={35} />
                </button>
              </div>

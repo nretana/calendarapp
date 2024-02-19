@@ -18,7 +18,7 @@ type AxiosRequestQueryType = {
 
 const axiosBaseQuery = ({ baseUrl = '', baseHeaders }: BaseQueryType): BaseQueryFn<AxiosRequestQueryType> => {
 
-    var axiosRequestFn = async({ url, method, data, params, headers }: AxiosRequestQueryType) => {
+    const axiosRequestFn = async({ url, method, data, params, headers }: AxiosRequestQueryType) => {
 
         try {
             const requestUrl = baseUrl + url;

@@ -3,28 +3,30 @@
 @import '../../../assets/scss/core/mixins';
 
 .navbar {
-    backdrop-filter: blur(25px);
     color: $secondary-color;
 
     .navbar-brand > img {
-        width: 60px;
+        width: 50px;
         height: auto;
     }
 
-    a.nav-link {
-        margin: 0;
-        color: $secondary-color;
-        border-bottom: 5px solid transparent;
-        &:last-of-type {
-            margin-right: 0;
-        }
+    .navbar-nav {
+        width: 25%;
+        margin-top: 0.5rem;
 
-        &.active {
-            color: $accent-2-dark-color;
-        }
+        a.btn-link {
+            border: 0;
+            margin: 0.25rem 0;
 
-        &:hover {
-            border-bottom: 5px solid $accent-2-dark-color;
+            &.active {
+                background-color: $secondary-color;
+                color: $white;
+                cursor: none;
+
+                &:hover {
+                    animation: none;
+                }
+            }
         }
     }
 }
@@ -36,8 +38,13 @@
             height: auto;
         }
 
-        a.nav-link {
-            margin: 0 2.75rem;
+        .navbar-nav {
+            width: inherit;
+            margin: 0;
+
+            a.btn-link {
+                margin: 0 2.75rem;
+            }
         }
     }
 }

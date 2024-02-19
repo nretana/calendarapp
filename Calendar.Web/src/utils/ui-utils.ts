@@ -2,12 +2,31 @@ import React from 'react';
 import { WeekDay } from '@custom-types/calendar-types';
 import { format, parse, setDate } from 'date-fns';
 import { dateConfig } from '@config/date-config';
+import { dir } from 'console';
 
 type WebAccessibilityElementType = {
   HtmlElementSelected: HTMLLIElement | null;
   HtmlElementToSelect: HTMLLIElement | null;
 };
 
+type ArrowType = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
+
+//calculate the operation to perform based on arrow key
+const calculateIndex = (direction: ArrowType, currentIndex: number): number => {
+
+    switch(direction){
+        case 'ArrowUp':
+            return currentIndex - 7;
+        case 'ArrowLeft':
+            return currentIndex - 1;
+        case 'ArrowRight':
+            return currentIndex + 1;
+        default:
+            throw new Error('Invalid operation');    
+    }
+}
+
+//get time label to be used in aria-label attribute of a grid cell
 export const getDateTimeLabel = (rowIndex: number, colIndex: number, selectedWeekList: WeekDay[]): string => {
 
     const currentHour = Math.floor((rowIndex) / 4);
@@ -15,18 +34,20 @@ export const getDateTimeLabel = (rowIndex: number, colIndex: number, selectedWee
     const current = selectedWeekList[colIndex];
 
     const currentDate = setDate(parse(current.date, dateConfig.isoDateFormat, new Date()), current.day);
-    var currentDateTime = currentDate.setHours(currentHour, currentMinutes);
+    const currentDateTime = currentDate.setHours(currentHour, currentMinutes);
     const currentDateTimeFormatted = format(currentDateTime, dateConfig.longDateTimeFormat);
 
     return currentDateTimeFormatted;
 }
 
-export const setKeyboardAccessibility = (webAccessibilityElement: WebAccessibilityElementType) => {
+//mark a grid cell as 'selected'
+export const selectHtmlElementInBoard = (webAccessibilityElement: WebAccessibilityElementType) => {
+
     if (webAccessibilityElement.HtmlElementSelected !== null) {
         webAccessibilityElement.HtmlElementSelected.tabIndex = -1;
         webAccessibilityElement.HtmlElementSelected.removeAttribute('aria-selected');
 
-        var newItem = webAccessibilityElement.HtmlElementToSelect;
+        const newItem = webAccessibilityElement.HtmlElementToSelect;
         if (newItem !== null) {
             newItem.tabIndex = 0;
             newItem.setAttribute('aria-selected', 'true');
@@ -35,14 +56,22 @@ export const setKeyboardAccessibility = (webAccessibilityElement: WebAccessibili
     }
 };
 
+//find the closest grid-cell that is available for being markes as 'selected'
 export const findClosestHtmlElement = (htmlCollection: HTMLCollection, 
                                        currentElem: HTMLLIElement, 
-                                       currentIndex: number) : HTMLLIElement => {
-    var element = currentElem;
-    var ci = currentIndex;
-    while(element.classList.contains('hide')){ 
-        element = htmlCollection[ci] as HTMLLIElement;
-        ci = ci - 7;
+                                       currentIndex: number,
+                                       direction: ArrowType) : HTMLLIElement => {
+    let element = currentElem;
+    let newIndex = currentIndex;
+    let maxLength = htmlCollection.length;
+
+    while (element.classList.contains('hide')){ 
+        if(newIndex <= 0 || newIndex >= maxLength){
+            break;
+        }
+
+        element = htmlCollection[newIndex] as HTMLLIElement;
+        newIndex = calculateIndex(direction, newIndex);
     }
 
     return element;
@@ -55,8 +84,8 @@ export const eventBoardAccessibility = (eventKey: string,
     const dataRow = currentTarget.getAttribute('data-row');
     const dataCol = currentTarget.getAttribute('data-col');
     const dataEvent = currentTarget.getAttribute('data-has-event');
-    const row = dataRow !== null ? parseInt(dataRow) : 0;
-    const col = dataCol !== null ? parseInt(dataCol) : 0;
+    const currentRow = dataRow !== null ? parseInt(dataRow) : 0;
+    const currentCol = dataCol !== null ? parseInt(dataCol) : 0;
     const hasEvent = (dataEvent !== null && dataEvent === 'true') ?? false;
     const eventGrid = refEventGrid.current;
 
@@ -64,58 +93,96 @@ export const eventBoardAccessibility = (eventKey: string,
         throw new Error('Null reference for event grid');
     }
 
-    const currentItemSelected = eventGrid.children[row * 7 + col] as HTMLLIElement;
+    //total rows: 96 rows in grid
+    //total columns: 7 columns in grid
+    //IMPORTANT: in html the grid is represented as a ol/li with 
+    //data attributes: data-row and data-col to represent the current position.
+    //cell in grid = Index of the list (the sum of current row + col)
+    const currentItemSelected = eventGrid.children[(currentRow * 7) + currentCol] as HTMLLIElement;
     const maxLength = eventGrid.children.length;
 
     switch (eventKey) {
-        case 'ArrowUp':
-            var newRow = row > 0 ? (row - 1) * 7 : row;
-            var gridRowEnd = Number(currentItemSelected.style.gridRowEnd);
-            var gridRowStart = Number(currentItemSelected.style.gridRowStart);
-            const nextElementPosition = newRow + col;
-            const nextElement = eventGrid.children[nextElementPosition] as HTMLLIElement;
-            var ElemToSelect = findClosestHtmlElement(eventGrid.children, nextElement, nextElementPosition);
+        case 'ArrowUp': {
+            const currentIndex = currentRow > 0 ? (currentRow - 1) * 7 : currentRow;
+            const moveToIndex = currentIndex + currentCol;
 
-            const moveToUpElement: WebAccessibilityElementType = {
-                HtmlElementSelected: currentItemSelected,
-                HtmlElementToSelect: ElemToSelect
-            };
-            setKeyboardAccessibility(moveToUpElement);
-        break;
-        case 'ArrowDown':
-            var newRow = row < maxLength - 1 ? (row + 1) * 7 : row;
-            var gridRowEnd = Number(currentItemSelected.style.gridRowEnd);
-            var gridRowStart = Number(currentItemSelected.style.gridRowStart);
-            var sumEventRows = hasEvent ? (((gridRowEnd - gridRowStart) - 1) * 7) : 0;
+            if(moveToIndex < 0){
+                return;
+            }
 
-            newRow = newRow + sumEventRows;
-            const moveToDownElement: WebAccessibilityElementType = {
+            const nextElement = eventGrid.children[moveToIndex] as HTMLLIElement;
+            const elemToSelectInBoard = findClosestHtmlElement(eventGrid.children, nextElement, moveToIndex, 'ArrowUp');
+
+            const moveUpToElement: WebAccessibilityElementType = {
                 HtmlElementSelected: currentItemSelected,
-                HtmlElementToSelect: eventGrid.children[newRow + col] as HTMLLIElement,
+                HtmlElementToSelect: elemToSelectInBoard
             };
-            setKeyboardAccessibility(moveToDownElement);
-        break;
-        case 'ArrowLeft':
-            var newCol = row > 0 || col > 0 ? col - 1 : col;
-            const moveToLeftElement: WebAccessibilityElementType = {
+
+            selectHtmlElementInBoard(moveUpToElement);
+            break;
+        }
+        case 'ArrowDown': {
+            const currentIndex = currentRow < maxLength - 1 ? (currentRow + 1) * 7 : currentRow;
+            const gridRowEnd = Number(currentItemSelected.style.gridRowEnd);
+            const gridRowStart = Number(currentItemSelected.style.gridRowStart);
+            const sumEventRows = hasEvent ? (((gridRowEnd - gridRowStart) - 1) * 7) : 0;
+
+            let moveToIndex = (currentIndex + sumEventRows) + currentCol;
+            if(moveToIndex >= maxLength){
+                return;
+            }
+
+            const moveDownToElement: WebAccessibilityElementType = {
                 HtmlElementSelected: currentItemSelected,
-                HtmlElementToSelect: eventGrid.children[row * 7 + newCol] as HTMLLIElement,
+                HtmlElementToSelect: eventGrid.children[moveToIndex] as HTMLLIElement,
             };
-            setKeyboardAccessibility(moveToLeftElement);
-        break;
-        case 'ArrowRight':
-            var newCol = col + 1 < maxLength - 1 ? col + 1 : col;
+
+            selectHtmlElementInBoard(moveDownToElement);
+            break;
+        }
+        case 'ArrowLeft': {
+            const newCol = currentRow > 0 || currentCol > 0 ? currentCol - 1 : currentCol;
+            const moveToIndex = currentRow * 7 + newCol;
+
+            if(moveToIndex < 0 ){
+                return;
+            }
+            
+            const nextElement = eventGrid.children[moveToIndex] as HTMLLIElement;
+            const elemToSelectInBoard = findClosestHtmlElement(eventGrid.children, nextElement, moveToIndex, 'ArrowLeft');
+
+            const moveLeftToElement: WebAccessibilityElementType = {
+                HtmlElementSelected: currentItemSelected,
+                HtmlElementToSelect: elemToSelectInBoard
+            };
+
+            selectHtmlElementInBoard(moveLeftToElement);
+            break;
+        }
+        case 'ArrowRight': {
+            const newCol = currentCol + 1 < maxLength - 1 ? currentCol + 1 : currentCol;
+            const moveToIndex = currentRow * 7 + newCol;
+
+            if(moveToIndex >= maxLength){
+                return;
+            }
+
+            const nextElement = eventGrid.children[moveToIndex] as HTMLLIElement;
+            const elemeToSelectInBoard = findClosestHtmlElement(eventGrid.children, nextElement, moveToIndex, 'ArrowRight');
             const moveToRightElement: WebAccessibilityElementType = {
                 HtmlElementSelected: currentItemSelected,
-                HtmlElementToSelect: eventGrid.children[row * 7 + newCol] as HTMLLIElement,
+                HtmlElementToSelect: elemeToSelectInBoard,
             };
-            setKeyboardAccessibility(moveToRightElement);
-        break;
-        case 'Enter':
+
+            selectHtmlElementInBoard(moveToRightElement);
+            break;
+        }
+        case 'Enter': {
             if (currentItemSelected !== null) {
                 currentItemSelected.click();
             }
-        break;
+            break;
+        }
     }
 };
 
@@ -125,9 +192,9 @@ export const resetBoardAccessibility = (refEventGrid: React.MutableRefObject<HTM
         throw new Error('Null reference for event board list');
     }
 
-    var htmlCollection = Array.from(refEventGrid.current.children);
+    const htmlCollection = Array.from(refEventGrid.current.children);
     htmlCollection.forEach((htmlItem) => {
-        var currentHtmlElement = htmlItem as HTMLLIElement;
+        const currentHtmlElement = htmlItem as HTMLLIElement;
         if (currentHtmlElement !== null) {
             currentHtmlElement.removeAttribute('aria-selected');
             currentHtmlElement.tabIndex = -1;

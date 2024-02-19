@@ -323,13 +323,6 @@ OTHER COLORS
 ==============================
 1A1B25 - blue darker for high constrast*/
 
-/*
-$primary-color: #3498db;     // Blue
-$secondary-color: #2c3e50;   // Dark Blue
-$accent-color: #e67e22;      // Orange (Accent)
-$neutral-color: #ecf0f1;     // Light Gray */
-
-
 //custom color palette
 //primary colors
 $primary-color: #0c223d;
@@ -338,13 +331,13 @@ $accent-color:  #5ed6a4;
 $accent-2-dark-color: #4A6ABA;
 $accent-2-light-color: #6281EC;
 
-//#D7F1E6; //mint color
-
 
 //backgrounds
-$bg-primary-color-tint-50: #F4F4F9;
+$bg-primary-color-tint-50: #F4F6FD;
+$bg-primary-color-tint-75: #E9EDFA;
 $bg-primary-color-shade-500: rgba(44, 80, 204, 0.1);
 $bg-primary-color-shade-900: #0c223d;
+
 
 //color + tint (white)
 //color + tone (gray)
@@ -369,40 +362,12 @@ $accent-color-shade-700: shade-color($accent-color, 40%) !default;
 
 
 
-/*$cs-primary: #1C6DD0;
-$secondary-color: #2ccc88; // #ffba0a;
-$cs-primary-dark: #384350; //#4f5f73;
-$primary-color-tone-200: #384350;*/
-
-
 //white color with transparemncy
 $white-100: rgba($white, 0.1); 
 $white-200: rgba($white, 0.2);
 $white-300: rgba($white, 0.3);
 $white-400: rgba($white, 0.4);
 $white-500: rgba($white, 0.5);
-
-/*$cs-primary-50: tint-color($cs-primary, 90%) !default;
-$cs-primary-100: tint-color($cs-primary, 80%) !default;
-$cs-primary-100: tint-color($cs-primary, 60%) !default;
-$cs-primary-300: tint-color($cs-primary, 40%) !default;
-$cs-primary-400: tint-color($cs-primary, 20%) !default;
-$cs-primary-500: $cs-primary !default;
-$primary-color-shade-600: shade-color($cs-primary, 20%) !default;
-$cs-primary-700: shade-color($cs-primary, 40%) !default;
-$cs-primary-800: shade-color($cs-primary, 60%) !default;
-$cs-primary-900: shade-color($cs-primary, 80%) !default;
-
-$secondary-color-50: tint-color($secondary-color, 90%) !default;
-$secondary-color-100: tint-color($secondary-color, 80%) !default;
-$secondary-color-200: tint-color($secondary-color, 60%) !default;
-$secondary-color-300: tint-color($secondary-color, 40%) !default;
-$secondary-color-400: tint-color($secondary-color, 20%) !default;
-$secondary-color-500: $secondary-color !default;
-$secondary-color-600: shade-color($secondary-color, 20%) !default;
-$secondary-color-700: shade-color($secondary-color, 30%) !default;
-$secondary-color-800: shade-color($secondary-color, 60%) !default;
-$secondary-color-900: shade-color($secondary-color, 80%) !default;*/
 
 
 // scss-docs-start theme-color-variables
@@ -413,7 +378,7 @@ $info:          $cyan !default;
 $warning:       $yellow !default;
 $danger:        $red !default;
 $light:         $accent-color !default; //$gray-100 !default;
-$dark:          $primary-color-shade-600 !default; //$gray-900 !default;
+$dark:          $primary-color !default; //$gray-900 !default;
 // scss-docs-end theme-color-variables
 
 // scss-docs-start theme-colors-map
@@ -426,6 +391,7 @@ $theme-colors: (
   "danger":     $danger,
   "light":      $light,
   "dark":       $dark,
+  "scroll":      $accent-color
 ) !default;
 // scss-docs-end theme-colors-map
 

@@ -25,9 +25,6 @@ export const eventApi = createApi({
                     throw new Error('Invalid response format');
                 }
                 return response;
-            },
-            transformErrorResponse: (response, meta, args) => {
-                return response;
             }
         }),
         getEvent: builder.query<Event, string>({
@@ -36,9 +33,7 @@ export const eventApi = createApi({
                           method: 'GET'
                         })
             },
-            transformResponse: (response: Event, meta, args) => {
-                return response;
-            }
+            transformResponse: (response: Event, meta, args) => response
         }),
         addEvent: builder.mutation<Event, EventCommand>({
             query: (body) => ({

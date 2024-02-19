@@ -20,7 +20,7 @@ const Services = () => {
                 <span>and get more done</span>
             </h2>
             <Bullets items={bullets} />
-            <div className='text-center d-none d-xl-block'>
+            <div className='text-center mt-5 d-none d-xl-block'>
                 <img className='img-fluid' src={curvedLeftArrowImg} alt='' />
             </div>
         </div>
