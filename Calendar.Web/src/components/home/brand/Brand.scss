@@ -26,6 +26,7 @@
     .hero-content {
         color: $secondary-color;
         z-index: 1;
+        position: relative;
         padding: 0 1rem;
 
         .hero-title {
@@ -36,7 +37,7 @@
             font-size: 1.5rem;
             font-weight: 700;
             font-family: 'tenor sans';
-            color: $accent-2-dark-color;
+            color: $accent-2-color;
         }
 
         .hero-text {
@@ -54,20 +55,41 @@
             content: ' ';
             background: url('../../../assets/imgs/hero_calendar_img2.svg');
             background-repeat: no-repeat;
-            height: 85%;
-            width: 53%;
-            background-position: 70px 0;
-            background-size: cover;
+            height: 75%;
+            width: 58%;
+            background-position: 0 0;
+            background-size: contain;
             max-height: 100vh;
             position: absolute;
-            bottom: -100px;
+            bottom: 0;
             right: 0;
         }
 
         .hero-content {
             color: $secondary-color;
-            z-index: 1;
             padding: 0;
+    
+            .hero-title {
+                font-size: 3rem;
+            }
+    
+            .hero-subheader {
+                font-size: 1.75rem;
+            }
+    
+            .hero-text {
+                font-size: 1.25rem;
+                padding-right: 5rem;
+            }
+        }
+    }
+
+}
+
+@include media-breakpoint-up(xl){ 
+    .hero-section {
+
+        .hero-content {
     
             .hero-title {
                 font-size: 3.5rem;
@@ -83,5 +105,4 @@
             }
         }
     }
-
 }

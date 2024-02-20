@@ -13,6 +13,7 @@ import ChevronLeft from '@assets/imgs/chevron-left.svg';
 import ChevronRight from '@assets/imgs/chevron-right.svg';
 
 import './Slider.scss';
+import { useEffect, useRef, useState } from 'react';
 
 const sliderItemList: SlideItem[] = [
   {
@@ -59,9 +60,19 @@ const Slider: React.FC = () => {
     const { currentSlides, prevSlide, nextSlide }  = useSlider({ slideItems: sliderItemList, intervalTime: 15 });
     const slide1 = currentSlides[0];
     const slide2 = currentSlides[1];
+    const refSlider = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+      const htmlElement = refSlider.current;
+      if(htmlElement !== null){
+        htmlElement.classList.remove('fade-in');
+        void htmlElement.offsetHeight;
+        htmlElement.classList.add('fade-in');
+      }
+    }, [currentSlides]);
 
     return(<div className='slider-content'>
-             <div key={`sc_${uuidv4()}`} className='row slider-current-slide fade-in'>
+             <div className='row slider-current-slide' ref={refSlider}>
                   <div className='col-12 col-sm-6'>
                     <SliderItem imgSrc={slide1.imgSrc} 
                                 imgAlt={slide1.imgAlt}
