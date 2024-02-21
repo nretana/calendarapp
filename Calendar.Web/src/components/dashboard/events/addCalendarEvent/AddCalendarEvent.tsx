@@ -3,7 +3,7 @@ import { Time } from '@internationalized/date';
 import { format, parse, setDate } from 'date-fns';
 
 import { FieldError, Input, Label, TextArea, TextField } from 'react-aria-components';
-import { Button, Form } from 'react-bootstrap';
+import { Alert, Button, Form } from 'react-bootstrap';
 import ColorPicker from '@components/ui/ColorPicker';
 import TimeField from '@components/core/TimeField';
 
@@ -50,6 +50,7 @@ const AddCalendarEvent: React.FC<AddEventProps> = ({ currentDateTime, currentEve
     const [fromTime, setFromTime] = useState<Time>(startTime);
     const [toTime, setToTime] = useState<Time>(endTime);
     const [color, setColor] = useState<string>(colorProps);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const [validatedForm, setIsValidatedForm] = useState<boolean>(false);
 
@@ -77,8 +78,11 @@ const AddCalendarEvent: React.FC<AddEventProps> = ({ currentDateTime, currentEve
 
         addEvent(newEvent).unwrap().then(event => {
                                         dispatch(weeklyCalendarBoardActions.addEvent({ eventPosition: currentEventPosition, event }));
+                                        setErrorMessage('');
+                                        onClose(false);
                                     }).catch(error => {
-                                        throw error;
+                                        setErrorMessage(error.errorMessage);
+                                        //throw error;
                                     }).finally(() => {
                                         dispatch(weeklyCalendarBoardActions.loadingStateBoard(false));
                                     });
@@ -104,9 +108,12 @@ const AddCalendarEvent: React.FC<AddEventProps> = ({ currentDateTime, currentEve
                                                             .then(async() => {
                                                                 const event = await dispatch(eventApi.endpoints.getEvent.initiate(currentEventId, { forceRefetch: true })).unwrap();
                                                                 dispatch(weeklyCalendarBoardActions.updateEvent({ eventPosition: currentEventPosition, event }));
+                                                                setErrorMessage('');
+                                                                onClose(false);
                                                             })
                                                             .catch((error) => {
-                                                                throw error;
+                                                                setErrorMessage(error.errorMessage);
+                                                                //throw error;
                                                             }).finally(() => {
                                                                 dispatch(weeklyCalendarBoardActions.loadingStateBoard(false));
                                                             });
@@ -127,7 +134,6 @@ const AddCalendarEvent: React.FC<AddEventProps> = ({ currentDateTime, currentEve
         }
 
         isUpdateEvent ? SubmitUpdateEventFn() : SubmitAddEventFn();
-        onClose(false);
     }
 
     return(<div className='form-content'>
@@ -136,12 +142,16 @@ const AddCalendarEvent: React.FC<AddEventProps> = ({ currentDateTime, currentEve
                     <img className='img-fluid' src={calendarIcon} alt='' width={25} height={25} />
                     <span className='fs-5 ms-2'>{currentDateFormatted}</span>
                 </div>
+                {(addEventResult.error || updateEventResult.error) && 
+                    <Alert variant='danger' className='mt-3'>
+                        <p className='mb-0'>{errorMessage}</p>
+                    </Alert>}
                 <Form className='pt-2' noValidate validated={validatedForm} onSubmit={onSubmitFormHandler}>
                     <Form.Group className='mb-3'>
                         <TextField name='title' type='text' 
                                                 value={title} 
                                                 onChange={setTitle} 
-                                                isRequired>
+                                                isRequired autoFocus>
                             <Label className='form-label'>Title</Label>
                             <Input className='form-control' />
                             <FieldError className='invalid-feedback d-block'>Enter a valid title</FieldError>

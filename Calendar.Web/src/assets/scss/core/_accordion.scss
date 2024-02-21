@@ -80,6 +80,13 @@
     border-color: var(--#{$prefix}accordion-btn-focus-border-color);
     outline: 0;
     box-shadow: var(--#{$prefix}accordion-btn-focus-box-shadow);
+    @include border-radius($accordion-border-radius);
+  }
+
+  &[aria-expanded="true"]{
+    @include border-radius(0);
+    @include border-top-start-radius($accordion-border-radius);
+    @include border-top-end-radius($accordion-border-radius);
   }
 }
 

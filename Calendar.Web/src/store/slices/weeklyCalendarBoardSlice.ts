@@ -17,6 +17,7 @@ const initEventBoard : EventBoard = {
     gridStart: 'auto',
     gridEnd: 'auto',
     isSpanRow: false,
+    isSelected: false
 }
 
 const initBoard = Array<EventBoard[]>(96).fill(Array<EventBoard>(7).fill(initEventBoard));
@@ -46,6 +47,7 @@ const addEventToCalendarBoard = (eventPosition: EventPosition, event: Event, eve
         gridEnd: gridEnd.toString(),
         gridColumn: eventPosition.column + 1,
         isSpanRow: false,
+        isSelected: true
     }
 
     updateEventBoardList[currentIndexInBoard][eventPosition.column] = {...newEventItem};
@@ -120,6 +122,11 @@ const weeklyCalendarBoardSlice = createSlice({
                 const eventPosition: EventPosition = { row, column }
                 addEventToCalendarBoard(eventPosition, event, eventListBoard);
             });
+
+            //marked as selected in the first cell when there are no events in the board
+            if(eventList.length === 0){
+                eventListBoard[0][0].isSelected = true;
+            }
 
             state.eventList = eventList;
             state.eventBoardList = [...eventListBoard];

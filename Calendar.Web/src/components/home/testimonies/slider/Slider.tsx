@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { useEffect, useRef } from 'react';
 import SliderItem from './sliderItem/SliderItem';
 import useSlider from '@hooks/useSlider';
 import { SlideItem } from '@custom-types/ui-types';
@@ -13,7 +13,6 @@ import ChevronLeft from '@assets/imgs/chevron-left.svg';
 import ChevronRight from '@assets/imgs/chevron-right.svg';
 
 import './Slider.scss';
-import { useEffect, useRef, useState } from 'react';
 
 const sliderItemList: SlideItem[] = [
   {

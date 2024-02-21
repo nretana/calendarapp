@@ -5,6 +5,13 @@
 .navbar {
     color: $secondary-color;
 
+    &.bg-scroll {
+        background-image: url('../../../assets/imgs/hero_bg.svg');
+        background-repeat: no-repeat;
+        background-position: bottom left;
+        background-size: cover;
+    }
+
     .navbar-brand > img {
         width: 50px;
         height: auto;

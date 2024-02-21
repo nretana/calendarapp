@@ -100,12 +100,16 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
         event !== null ? setCurrentEvent(event) : setCurrentEvent(null);
         setIsShowEvent(prevState => !prevState);
 
-        resetBoardAccessibility(refEventGrid);
+        //resetBoardAccessibility(refEventGrid);
     }
 
     const onKeyDownEventGridHandler = (e: React.KeyboardEvent<HTMLOListElement>) => {
         
         if(!allowedKeyboardKeys.includes(e.key)){
+            return;
+        }
+
+        if(!(e.target instanceof HTMLLIElement)){
             return;
         }
 
@@ -133,13 +137,14 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
                                 const eventFound = eventBoard.event;
                                 const hideClass = eventBoard?.isSpanRow ? 'hide': '';
                                 const ariaLabel = getDateTimeLabel(rowIndex, colIndex, selectedWeekList);
+                                const availableClass= eventFound !== null ? 'unavailable-item' : 'available-item';
 
                                 const gridItemAttributes : CalendarGridItemAttr = {
                                     key: key,
                                     id: key,
                                     tabIndex: -1,
                                     role: 'gridcell',
-                                    className: `app-item available-item ${hideClass}`,
+                                    className: `app-item ${availableClass} ${hideClass}`,
                                     ['aria-label']: ariaLabel,
                                     ['aria-rowindex']: (rowIndex + 1),
                                     ['aria-colindex']: (colIndex + 1),
@@ -149,8 +154,7 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
                                     onClick:(e) => onClickTimeHandler(e, rowIndex, colIndex, eventFound)
                                 }
 
-                                if(currentEventPosition.row === rowIndex && 
-                                   currentEventPosition.column === colIndex){
+                                if(eventBoard.isSelected){
                                     gridItemAttributes.tabIndex = 0;
                                     gridItemAttributes['aria-selected'] = true;
                                 }

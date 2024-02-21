@@ -70,6 +70,12 @@ namespace Calendar.Appointment.API.Controllers
                 return BadRequest();
             }
 
+            _messageBus.Open(_messageBusConfiguration.Value.Uri);
+            if (!_messageBus.Channel.IsOpen)
+            {
+                return BadRequest();
+            }
+
             var eventMapped = _mapper.Map<Event>(newEvent);
             _eventCalendar.AddEvent(eventMapped);
             await _eventCalendar.SaveChangesAsync();
@@ -95,6 +101,12 @@ namespace Calendar.Appointment.API.Controllers
             if(eventFound == null)
             {
                 return NotFound();
+            }
+
+            _messageBus.Open(_messageBusConfiguration.Value.Uri);
+            if (!_messageBus.Channel.IsOpen)
+            {
+                return BadRequest();
             }
 
             var eventToPatch = _mapper.Map<EventUpdateDto>(eventFound);
@@ -130,6 +142,12 @@ namespace Calendar.Appointment.API.Controllers
             if (!await _eventCalendar.IsEventExistsAsync(eventId))
             {
                 return NotFound();
+            }
+
+            _messageBus.Open(_messageBusConfiguration.Value.Uri);
+            if (!_messageBus.Channel.IsOpen)
+            {
+                return BadRequest();
             }
 
             var eventFound = await _eventCalendar.GetEventAsync(eventId);

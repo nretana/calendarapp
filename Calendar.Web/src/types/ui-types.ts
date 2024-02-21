@@ -18,4 +18,4 @@ export type SlideItem = {
     imgAlt: string,
     label: string,
     description: string
-  }
+}

@@ -56,7 +56,7 @@ export const selectHtmlElementInBoard = (webAccessibilityElement: WebAccessibili
     }
 };
 
-//find the closest grid-cell that is available for being markes as 'selected'
+//find the closest grid-cell that is available for being marked as 'selected'
 export const findClosestHtmlElement = (htmlCollection: HTMLCollection, 
                                        currentElem: HTMLLIElement, 
                                        currentIndex: number,

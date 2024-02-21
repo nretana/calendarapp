@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Event, EventCommand } from '@custom-types/calendar-types';
-import { getPatchDocument } from '@utils/api-utils';
+import { getPatchDocument, statusCodeErrorMessage } from '@utils/api-utils';
 
 export const eventApi = createApi({
     reducerPath: 'eventApi',
@@ -40,7 +40,11 @@ export const eventApi = createApi({
                 url: '/events',
                 method: 'POST',
                 body: JSON.stringify(body)
-            })
+            }),
+            transformErrorResponse: response => {
+                const errorMessage = statusCodeErrorMessage(response.status);
+                return { errorMessage }
+            }
         }),
         updateEvent: builder.mutation<unknown, { eventId: string, body: EventCommand }>({
             query: ({ eventId, body}) => {
@@ -51,13 +55,21 @@ export const eventApi = createApi({
                     'Content-Type': 'application/json-patch+json'
                 },
                 body: getPatchDocument(body, 'replace') })
+            },
+            transformErrorResponse: response => {
+                const errorMessage = statusCodeErrorMessage(response.status);
+                return { errorMessage }
             }
         }),
         removeEvent: builder.mutation<unknown, string>({
             query: (eventId) => ({
                 url: `/events/${eventId}`,
                 method: 'DELETE',
-            })
+            }),
+            transformErrorResponse: response => {
+                const errorMessage = statusCodeErrorMessage(response.status);
+                return { errorMessage }
+            }
         })
     })
 })

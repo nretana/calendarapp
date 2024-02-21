@@ -56,7 +56,7 @@ const CalendarBoard: React.FC = () => {
                     </Alert> }
                 <div className='calendar-board-grid'>
                         <CalendarGridHeader />
-                        <div className='grid-wrapper' ref={boardRef}>
+                        <div className='grid-wrapper' ref={boardRef} tabIndex={-1}>
                             <CalendarGrid />
                             <CalendarEventList setIsShowEvent={setIsShowEvent} 
                                             setCurrentEvent={setCurrentEvent} 
@@ -69,8 +69,7 @@ const CalendarBoard: React.FC = () => {
             <div className={`side-bar ${isShowEvent ? 'show' : ''}`}>
                     { isShowEvent && <AddCalendarEvent currentDateTime={currentDateTime}
                                                     currentEventPosition={currentEventPosition}
-                                                    currentEvent={currentEvent} 
-                                                    //isShow={isShowEvent}
+                                                    currentEvent={currentEvent}
                                                     onClose={setIsShowEvent} /> }
             </div>
         </div>

@@ -1,3 +1,5 @@
+@use "sass:string";
+@import './../../../../assets/scss/core/functions';
 
 @keyframes fade-in {
     from {
@@ -9,4 +11,19 @@
       transform: translate(0%, 0%);
       opacity: 1;
     }
+}
+
+$event-colors: (
+   #1EB2A6,
+   #1C6DD0,
+   #7743DB,
+   #FF9B50,
+   #FF5E78
+) !default;
+
+@each $color in $event-colors {
+  $colorClass: string.slice(#{$color}, 2, 7);
+  .event-color-#{$colorClass} {
+    background-color: $color;
   }
+}

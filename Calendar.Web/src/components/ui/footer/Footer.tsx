@@ -13,12 +13,14 @@ const Footer = () => {
         <div className='position-relative'>
         <div className='row justify-content-between align-items-end'>
             <div className='col'>
-                <img className='img-fluid brand-logo' src={BrandLogo} alt='Chronos logo' />
+                <a href='# '>
+                    <img className='img-fluid brand-logo' src={BrandLogo} alt='Chronos logo' />
+                </a>
             </div>
             <div className='col text-end'>
-                <img className='me-3' src={xIcon} alt='X logo' />
-                <img className='me-3' src={instagramIcon} alt='Instagram logo' />
-                <img src={facebookIcon} alt='Facebook logo' />
+                <a href='# ' className='me-3'><img src={xIcon} alt='X logo' loading='lazy' /></a>
+                <a href='# ' className='me-3'><img src={instagramIcon} alt='Instagram logo' loading='lazy' /></a>
+                <a href='# ' className='me-3'><img src={facebookIcon} alt='Facebook logo' loading='lazy' /></a>
             </div>
         </div>
         <hr></hr>

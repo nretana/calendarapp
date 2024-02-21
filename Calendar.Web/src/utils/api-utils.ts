@@ -18,3 +18,16 @@ export const getPatchDocument = (object: any, operation: PatchOperation) : Patch
     }
     return patchDocument;
 }
+
+
+export const statusCodeErrorMessage = (status: number | string) : string => {
+
+    switch(status){
+        case 'FETCH_ERROR':
+        case 'PARSING_ERROR':
+        case 'TIMEOUT_ERROR':
+        case 'CUSTOM_ERROR':
+        default:
+            return 'There was a problem trying to process your request. Please try again later.';
+    }
+}

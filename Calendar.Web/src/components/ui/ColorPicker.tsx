@@ -19,9 +19,11 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ id, colors, color, setColor }
                        aria-label='Select a color'
                        onChange={setColor} 
                        orientation='horizontal'>
-                       {colors.map((color, index) => <Radio key={`radio_c${index}`} className='color-picker-radio' value={color} aria-label={`${color} color`}>
-                                                    <span className='color-radio' style={{ background: color }}></span>
-                                                </Radio>)}
+                       {colors.map((currentColor, index) => <Radio key={`radio_c${index}`} className='color-picker-radio' 
+                                                                                           value={currentColor} 
+                                                                                           aria-label={`${color} color`}>
+                                                                <span className='color-radio' style={{ background: currentColor }}></span>
+                                                            </Radio>)}
            </RadioGroup>)
 }
 

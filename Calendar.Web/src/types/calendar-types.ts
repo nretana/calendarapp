@@ -37,6 +37,7 @@ export type EventBoard = {
     gridEnd: string,
     gridColumn?: number,
     isSpanRow: boolean,
+    isSelected?: boolean
 }
 
 export type WeekDay = {

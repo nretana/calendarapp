@@ -10,9 +10,14 @@ type FullViewProps = {
 }
 
 const FullView: React.FC<FullViewProps> = ({ event, onRemove, animationSpecs }) => {
+
+    const colorClass = event.color.replace('#', '');
+    const eventClass = `event-calendar-full-view event-color-${colorClass}`;
+    console.log(event.color);
+
     return(
-        <div className='event-calendar-full-view' data-id={event.eventId} style={{ backgroundColor: event.color, animation: animationSpecs }}>
-             <div className='event-header' style={{ backgroundColor: event.color }}>
+        <div className={eventClass} data-id={event.eventId} style={{ animation: animationSpecs }}>
+             <div className='event-header'>
                <div>
                   {`${event.startTime} — ${event.endTime}`}
                </div>

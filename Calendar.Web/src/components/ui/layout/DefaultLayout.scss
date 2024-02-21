@@ -1,0 +1,11 @@
+@import '../../../assets/scss/core/functions';
+@import '../../../assets/scss/core/variables';
+
+.default-layout {
+    background-color: $accent-color;
+    background-image: url('../../../assets/imgs/hero_bg.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+}
