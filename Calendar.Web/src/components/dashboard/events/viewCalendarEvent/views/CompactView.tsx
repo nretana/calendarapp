@@ -20,7 +20,7 @@ const CompactView: React.FC<CompactViewProps> = ({ event, onRemove, animationSpe
                <div>
                   {`${event.startTime} — ${event.endTime}`}
                </div>
-               <button type='button' className='btn-close' onClick={onRemove} aria-label='Remove icon'>
+               <button type='button' className='btn-close' onClick={onRemove} aria-label='Remove icon' tabIndex={-1}>
                 </button>
              </div>
          </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Event } from '@custom-types/calendar-types';
+
 import './FullView.scss';
 
 type FullViewProps = {
@@ -13,7 +14,6 @@ const FullView: React.FC<FullViewProps> = ({ event, onRemove, animationSpecs }) 
 
     const colorClass = event.color.replace('#', '');
     const eventClass = `event-calendar-full-view event-color-${colorClass}`;
-    console.log(event.color);
 
     return(
         <div className={eventClass} data-id={event.eventId} style={{ animation: animationSpecs }}>
@@ -21,7 +21,7 @@ const FullView: React.FC<FullViewProps> = ({ event, onRemove, animationSpecs }) 
                <div>
                   {`${event.startTime} — ${event.endTime}`}
                </div>
-               <button type='button' className='btn-close' onClick={onRemove} aria-label='Remove icon'>
+               <button type='button' className='btn-close' onClick={onRemove} aria-label='Remove icon' tabIndex={-1}>
                </button>
              </div>
              <div className='event-body'>

@@ -20,7 +20,7 @@ const SummaryView: React.FC<SummaryViewProps> = ({ event, onRemove, animationSpe
                <div>
                   {`${event.startTime} — ${event.endTime}`}
                </div>
-               <button className='btn-close' onClick={onRemove} aria-label='Remove icon'></button>
+               <button className='btn-close' onClick={onRemove} aria-label='Remove icon' tabIndex={-1}></button>
              </div>
              <div className='event-body'>
                 <div className='event-title'>{event.title}</div>

@@ -27,6 +27,7 @@ export const statusCodeErrorMessage = (status: number | string) : string => {
         case 'PARSING_ERROR':
         case 'TIMEOUT_ERROR':
         case 'CUSTOM_ERROR':
+            return 'There was a problem trying to process your request. Please try again later.';
         default:
             return 'There was a problem trying to process your request. Please try again later.';
     }

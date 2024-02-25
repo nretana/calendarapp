@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '@store/storeHooks';
 import { CurrentDateTime, Event, EventBoard, EventPosition } from '@custom-types/calendar-types';
-import { allowedKeyboardKeys } from '@custom-types/constants';
-import { eventBoardAccessibility, getDateTimeLabel, resetBoardAccessibility } from '@utils/ui-utils';
+import { eventBoardAccessibility, getDateTimeLabel, isValidKeyboardNavigation } from '@utils/ui-utils';
 import { weeklyCalendarBoardActions } from '@store/slices/weeklyCalendarBoardSlice';
 
 import { useGetEventsQuery } from '@store/services/events/eventApi'
@@ -37,7 +36,7 @@ type CalendarGridItemAttr = {
     ['data-col']: number,
     ['data-has-event']: boolean,
     style?: React.CSSProperties
-    onClick: (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => void
+    onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }
 
 const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, setCurrentEvent, setCurrentEventPosition, setCurrentDateTime, currentEventPosition }) => {
@@ -48,7 +47,7 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
     const weekEventBoardList = useAppSelector(state => state.weeklyCalendarBoard.eventBoardList);
     const isLoadingEventBoard = useAppSelector(state => state.weeklyCalendarBoard.isLoadingEventBoard);
     const isErrorEventBoard = useAppSelector(state => state.weeklyCalendarBoard.isErrorEventBoard);
-    const refEventGrid = useRef<HTMLOListElement | null>(null);
+    const refEventGrid = useRef<HTMLDivElement | null>(null);
 
     const startDate = selectedWeekList[0].date;
     const endDate = selectedWeekList[selectedWeekList.length -1].date;
@@ -78,7 +77,7 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
         return (isLoading || isFetching || isLoadingEventBoard);
     }
 
-    const onClickTimeHandler = (e: React.MouseEvent<HTMLLIElement>, 
+    const onClickTimeHandler = (e: React.MouseEvent<HTMLDivElement>, 
                                 rowIndex: number,
                                 colIndex: number,
                                 event: (Event| null | undefined)) => {
@@ -103,26 +102,22 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
         //resetBoardAccessibility(refEventGrid);
     }
 
-    const onKeyDownEventGridHandler = (e: React.KeyboardEvent<HTMLOListElement>) => {
+    const onKeyDownEventGridHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+
+        if(!isValidKeyboardNavigation(e.target, e.currentTarget, e.key, e.shiftKey)){ 
+            return;
+        }
         
-        if(!allowedKeyboardKeys.includes(e.key)){
-            return;
-        }
-
-        if(!(e.target instanceof HTMLLIElement)){
-            return;
-        }
-
         e.preventDefault();
         e.stopPropagation();
-        const currentElem = e.target as HTMLLIElement;
+        const currentElem = e.target as HTMLDivElement;
         eventBoardAccessibility(e.key, currentElem, refEventGrid);
     }
 
     return (<>
             { isLoadState() && <SkeletonGrid /> }
             { isEventGridAllowed() &&
-              <ol className='grid-event' 
+              <div className='grid-event' 
                   tabIndex={-1} 
                   role='grid'
                   aria-rowcount={96}
@@ -165,17 +160,17 @@ const CalendarEventList: React.FC<CalendarEventListProps> = ({ setIsShowEvent, s
                                                                  gridColumn: eventBoard?.gridColumn 
                                 };
 
-                                return <li { ...gridItemAttributes} data-event-id={eventFound?.eventId}>
+                                return <div { ...gridItemAttributes} data-event-id={eventFound?.eventId}>
                                           { eventFound !== null && <ViewCalendarEvent event={eventFound} 
                                                                                       currentIndex={colIndex} /> }
-                                        </li>
+                                        </div>
                                 }
 
-                                return <li {...gridItemAttributes}></li>
+                                return <div {...gridItemAttributes}></div>
                             })}
                         </React.Fragment>
                 })}
-            </ol> }
+            </div> }
         </>
     )
 }

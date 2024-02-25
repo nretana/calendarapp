@@ -1,16 +1,24 @@
 
+import './ErrorContent.scss';
+
 type ErrorContentProps = {
+    status?: number,
     title?: string,
     message?: string
 }
 
-const ErrorContent : React.FC<ErrorContentProps> = ({ title = 'Oops!', message = 'Something went wrong' }) => {
+const ErrorContent : React.FC<ErrorContentProps> = ({ status = '404', 
+                                                      title = 'Page not found', 
+                                                      message = 'The page you are looking for was removed or temporarily unavailable.' }) => {
     return(<>
-            <div className='container vh-100'>
-                <div className='row justify-content-center align-items-center h-100'>
-                    <div className='col text-center'>
-                        <h1>{title}</h1>
-                        <p>{message}</p>
+            <div className='container-fluid g-0 error-content'>
+                <div className='container h-100'>
+                    <div className='row g-0 align-items-center h-100'>
+                        <div className='col-12 col-md-8 col-lg-5'>
+                            <h1 className='title'>{status}</h1>
+                            <span className='sub-title'>{title}</span>
+                            <p className='message'>{message}</p>
+                        </div>
                     </div>
                 </div>
             </div>

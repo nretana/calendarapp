@@ -8,6 +8,7 @@ import SkeletonLayout from '@components/skeletons/SkeletonLayout';
 
 //Pages
 import HomePage from './pages/HomePage';
+import NotFoundPage from '@pages/NotFoundPage';
 
 import './App.scss';
 
@@ -20,11 +21,12 @@ function App() {
           <Routes>
             <Route path='/' element={<WideLayout />} >
               <Route index element={<HomePage />} />
-              <Route path='*' element={<HomePage />} />
+              
             </Route>
             <Route path='/' element={<DefaultLayout />} >
               <Route path='/dashboard' element={<DashboardPage />} />
             </Route>
+            <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </Suspense>
       </div>

@@ -14,16 +14,18 @@
 }
 
 $event-colors: (
-   #1EB2A6,
-   #1C6DD0,
-   #7743DB,
-   #FF9B50,
-   #FF5E78
+   #1EB2A6: #FFFFFF,
+   #1C6DD0: #FFFFFF,
+   #7743DB: #FFFFFF,
+   #FF9B50: #FFFFFF,
+   #FF5E78: #FFFFFF
 ) !default;
 
-@each $color in $event-colors {
-  $colorClass: string.slice(#{$color}, 2, 7);
+@each $bg-color, $color in $event-colors {
+  $colorClass: string.slice(#{$bg-color}, 2, 7);
+
   .event-color-#{$colorClass} {
-    background-color: $color;
+    color: $color;
+    background-color: $bg-color;
   }
 }

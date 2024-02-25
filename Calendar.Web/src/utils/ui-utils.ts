@@ -1,12 +1,13 @@
 import React from 'react';
 import { WeekDay } from '@custom-types/calendar-types';
+import { allowedKeyboardKeys } from '@custom-types/constants';
 import { format, parse, setDate } from 'date-fns';
 import { dateConfig } from '@config/date-config';
-import { dir } from 'console';
+
 
 type WebAccessibilityElementType = {
-  HtmlElementSelected: HTMLLIElement | null;
-  HtmlElementToSelect: HTMLLIElement | null;
+  HtmlElementSelected: HTMLDivElement | null;
+  HtmlElementToSelect: HTMLDivElement | null;
 };
 
 type ArrowType = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
@@ -58,9 +59,9 @@ export const selectHtmlElementInBoard = (webAccessibilityElement: WebAccessibili
 
 //find the closest grid-cell that is available for being marked as 'selected'
 export const findClosestHtmlElement = (htmlCollection: HTMLCollection, 
-                                       currentElem: HTMLLIElement, 
+                                       currentElem: HTMLDivElement, 
                                        currentIndex: number,
-                                       direction: ArrowType) : HTMLLIElement => {
+                                       direction: ArrowType) : HTMLDivElement => {
     let element = currentElem;
     let newIndex = currentIndex;
     let maxLength = htmlCollection.length;
@@ -70,7 +71,7 @@ export const findClosestHtmlElement = (htmlCollection: HTMLCollection,
             break;
         }
 
-        element = htmlCollection[newIndex] as HTMLLIElement;
+        element = htmlCollection[newIndex] as HTMLDivElement;
         newIndex = calculateIndex(direction, newIndex);
     }
 
@@ -78,8 +79,8 @@ export const findClosestHtmlElement = (htmlCollection: HTMLCollection,
 }
 
 export const eventBoardAccessibility = (eventKey: string,
-                                        currentTarget: HTMLLIElement,
-                                        refEventGrid: React.MutableRefObject<HTMLOListElement | null>) => {
+                                        currentTarget: HTMLDivElement,
+                                        refEventGrid: React.MutableRefObject<HTMLDivElement | null>) => {
   
     const dataRow = currentTarget.getAttribute('data-row');
     const dataCol = currentTarget.getAttribute('data-col');
@@ -98,7 +99,7 @@ export const eventBoardAccessibility = (eventKey: string,
     //IMPORTANT: in html the grid is represented as a ol/li with 
     //data attributes: data-row and data-col to represent the current position.
     //cell in grid = Index of the list (the sum of current row + col)
-    const currentItemSelected = eventGrid.children[(currentRow * 7) + currentCol] as HTMLLIElement;
+    const currentItemSelected = eventGrid.children[(currentRow * 7) + currentCol] as HTMLDivElement;
     const maxLength = eventGrid.children.length;
 
     switch (eventKey) {
@@ -110,7 +111,7 @@ export const eventBoardAccessibility = (eventKey: string,
                 return;
             }
 
-            const nextElement = eventGrid.children[moveToIndex] as HTMLLIElement;
+            const nextElement = eventGrid.children[moveToIndex] as HTMLDivElement;
             const elemToSelectInBoard = findClosestHtmlElement(eventGrid.children, nextElement, moveToIndex, 'ArrowUp');
 
             const moveUpToElement: WebAccessibilityElementType = {
@@ -134,7 +135,7 @@ export const eventBoardAccessibility = (eventKey: string,
 
             const moveDownToElement: WebAccessibilityElementType = {
                 HtmlElementSelected: currentItemSelected,
-                HtmlElementToSelect: eventGrid.children[moveToIndex] as HTMLLIElement,
+                HtmlElementToSelect: eventGrid.children[moveToIndex] as HTMLDivElement,
             };
 
             selectHtmlElementInBoard(moveDownToElement);
@@ -148,7 +149,7 @@ export const eventBoardAccessibility = (eventKey: string,
                 return;
             }
             
-            const nextElement = eventGrid.children[moveToIndex] as HTMLLIElement;
+            const nextElement = eventGrid.children[moveToIndex] as HTMLDivElement;
             const elemToSelectInBoard = findClosestHtmlElement(eventGrid.children, nextElement, moveToIndex, 'ArrowLeft');
 
             const moveLeftToElement: WebAccessibilityElementType = {
@@ -167,7 +168,7 @@ export const eventBoardAccessibility = (eventKey: string,
                 return;
             }
 
-            const nextElement = eventGrid.children[moveToIndex] as HTMLLIElement;
+            const nextElement = eventGrid.children[moveToIndex] as HTMLDivElement;
             const elemeToSelectInBoard = findClosestHtmlElement(eventGrid.children, nextElement, moveToIndex, 'ArrowRight');
             const moveToRightElement: WebAccessibilityElementType = {
                 HtmlElementSelected: currentItemSelected,
@@ -183,6 +184,15 @@ export const eventBoardAccessibility = (eventKey: string,
             }
             break;
         }
+        case 'Tab':
+            if (currentItemSelected !== null) {
+                var btnClose = currentItemSelected.querySelector('.btn-close') as HTMLButtonElement;
+                if(btnClose !== null){
+                    btnClose.tabIndex = 0;
+                    btnClose.focus();
+                }
+            }
+            break;
     }
 };
 
@@ -201,3 +211,25 @@ export const resetBoardAccessibility = (refEventGrid: React.MutableRefObject<HTM
         }
     });
 };
+
+
+export const isValidKeyboardNavigation = (target: EventTarget, currentTarget: EventTarget, eventKey: string, isShiftKey: boolean) => {
+
+    if(isShiftKey){
+        return false;
+    }
+
+    const currentTargetElement = currentTarget as HTMLDivElement;
+    const targetElement = target as HTMLDivElement;
+    const currentTargetRole = currentTargetElement.getAttribute('role') ?? '';
+    const targetRole = targetElement.getAttribute('role') ?? '';
+
+    if(currentTargetRole !== 'grid' || targetRole !== 'gridcell'){
+        return false;
+    }
+    
+    if(!allowedKeyboardKeys.includes(eventKey)){
+        return false;
+    }
+    return true;
+}

@@ -1,6 +1,7 @@
+import ErrorContent from '@components/error/ErrorContent';
 
 const NotFoundPage = () => {
-    return(<></>)
+    return(<><ErrorContent /></>)
 }
 
 export default NotFoundPage;
