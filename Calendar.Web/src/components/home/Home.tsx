@@ -4,9 +4,8 @@ import Services from './/services/Services';
 import Benefits from './/benefits/Benefits';
 import Customers from './/customer/Customers';
 import Testimonies from './/testimonies/Testimonies';
-import Faq from './/faq/Faq';
+import Faq from './faq/Faq';
 
-import GridBg from './GridBg';
 
 import './Home.scss';
 

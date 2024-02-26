@@ -18,6 +18,7 @@ const ErrorContent : React.FC<ErrorContentProps> = ({ status = '404',
                             <h1 className='title'>{status}</h1>
                             <span className='sub-title'>{title}</span>
                             <p className='message'>{message}</p>
+                            <a href='/' className='btn btn-dark mt-4'>Back to Homepage</a>
                         </div>
                     </div>
                 </div>

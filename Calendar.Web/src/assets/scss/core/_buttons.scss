@@ -274,6 +274,15 @@
 }
 
 
+@-moz-document url-prefix() {
+  .btn-link {
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+
 @keyframes btn-dark-hover {
   0% { box-shadow: 0 0 0 0 $secondary-color }
 }

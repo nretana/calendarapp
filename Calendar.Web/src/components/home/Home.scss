@@ -30,11 +30,10 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: $secondary-color;
-    mask-image: get-image-url($images);
-    mask-position: get-image-position($imagePositions);
-    mask-repeat: no-repeat, no-repeat;
-    mask-size: 29px 29px, 29px, 29px;
+    background-image: get-image-url($images);
+    background-position: get-image-position($imagePositions);
+    background-repeat: no-repeat, no-repeat;
+    background-size: 30px 30px, 30px, 30px;
     width: 100%;
     height: 100%;
 }
@@ -49,10 +48,9 @@
     grid-template-columns: 50% 50%;
     grid-template-rows: repeat(34, auto);
     margin: 0 0.75rem;
-    $grid-border-radius-width: 29px;
     grid-row-gap: 2rem;
-
     position: relative;
+    $grid-border-radius-width: 30px;
 
     [class^='grid-cell']{
         background-color: $secondary-color;
@@ -146,14 +144,13 @@
             grid-column: 2 / 2; //from column 2 to column 2
             grid-row: 1 / span 5;
             background-color: transparent;
-            $imgPositions: ();
 
             &:before {
                 content: " ";
                 $imageList: './../../assets/imgs/corner_bottom_left_icon.svg';
                 //format for img position is: 0 0
                 //use a comma at then end to declare the list separator is by a comma
-                $imagePositionList: -1px calc(100% + 0.5px),;
+                $imagePositionList: 0 100%,;
                 @include border-radius-inset($imageList, $imagePositionList);
             }
         }
@@ -166,7 +163,7 @@
             &:before {
                 content: " ";
                 $imageList: './../../assets/imgs/corner_top_right_icon.svg', './../../assets/imgs/corner_bottom_right_icon.svg';
-                $imagePositionList: calc(100% + 0.5px) -0.5px, calc(100% + 0.5px) calc(100% + 0.5px);
+                $imagePositionList: 100% 0, 100% 100%;
                 @include border-radius-inset($imageList, $imagePositionList);
             }
         }
@@ -194,7 +191,7 @@
             &:before {
                 content: " ";
                 $imageList: './../../assets/imgs/corner_top_left_icon.svg', './../../assets/imgs/corner_bottom_left_icon.svg';
-                $imagePositionList: -1px -1px, -1px 100%;
+                $imagePositionList: 0 0, 0 100%;
                 @include border-radius-inset($imageList, $imagePositionList);
             }
         }
@@ -214,7 +211,7 @@
             &:before {
                 content: " ";
                 $imageList: './../../assets/imgs/corner_top_right_icon.svg', './../../assets/imgs/corner_bottom_right_icon.svg';
-                $imagePositionList: calc(100% + 0.5px) -1px, calc(100% + 0.5px) 100%;
+                $imagePositionList: 100% 0, 100% 100%;
                 @include border-radius-inset($imageList, $imagePositionList);
             }
         }

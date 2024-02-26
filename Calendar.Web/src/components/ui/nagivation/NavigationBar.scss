@@ -8,8 +8,9 @@
     &.bg-scroll {
         background-image: url('../../../assets/imgs/hero_bg.svg');
         background-repeat: no-repeat;
-        background-position: bottom left;
+        background-position: 0 0;
         background-size: cover;
+        background-attachment: fixed;
     }
 
     .navbar-brand > img {
@@ -18,7 +19,6 @@
     }
 
     .navbar-nav {
-        width: 25%;
         margin-top: 0.5rem;
 
         a.btn-link {
@@ -38,8 +38,19 @@
     }
 }
 
+@include media-breakpoint-up(md){
+
+    .navbar {
+
+        .navbar-nav {
+            width: 25%;
+        }
+    }
+}
+
 @include media-breakpoint-up(lg){
     .navbar {
+
         .navbar-brand > img {
             width: 65px;
             height: auto;
@@ -52,6 +63,15 @@
             a.btn-link {
                 margin: 0 2.75rem;
             }
+        }
+    }
+}
+
+@media only screen  and (max-width: 991.98px) and (orientation: landscape) {
+
+    .navbar {
+        .navbar-nav {
+            width: 50%;
         }
     }
 }

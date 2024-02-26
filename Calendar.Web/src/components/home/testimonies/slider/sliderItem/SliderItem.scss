@@ -1,12 +1,16 @@
 @import '../../../../../assets/scss/core/functions';
 @import '../../../../../assets/scss/core/variables';
+@import '../../../../../assets/scss/core/mixins';
 
 .slider-item {
-    //max-width: 225px;
     margin: 0 auto;
     padding-left: 1.25rem;
     padding-right: 1.25rem;
     text-align: center;
+
+    &:first-of-type {
+        margin-bottom: 2rem;
+    }
 
     .slider-image {
         border-radius: 29px;
@@ -14,7 +18,6 @@
 
     .slider-description {
         margin-top: 1.25rem;
-        //max-width: 222px;
         position: relative;
         padding-top: 2.5rem;
         padding-bottom: 2.5rem;
@@ -45,5 +48,13 @@
         font-weight: 500;
         font-size: 1.25rem;
         padding-left: 1rem;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .slider-item {
+        &:first-of-type {
+            margin-bottom: 0;
+        }
     }
 }

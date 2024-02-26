@@ -9,6 +9,7 @@ services:
     dockerfile: Dockerfile
    container_name: calendar.ui
    image: calendar.ui:latest
+   restart: always
    ports:
     - 5000:443 
    depends_on:
@@ -99,6 +100,7 @@ services:
     dockerfile: Dockerfile
    container_name: calendar.db
    image: calendar.db:latest
+   restart: always
    ports:
     - 1633:1433
    environment:
@@ -112,6 +114,7 @@ services:
     dockerfile: Dockerfile
    container_name: calendar.rabbitmq
    image: calendar.rabbitmq:latest
+   restart: always
    #environment:
    # - RABBITMQ_DEFAULT_USER=guest
    # - RABBITMQ_DEFUALT_PASS=guest123 
