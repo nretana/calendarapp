@@ -38,6 +38,9 @@ namespace Calendar.Notification.API.Services
                 _logger.LogInformation($"Running background service");
                 _logger.LogInformation($"Subscribe to exchange: [{_messageBusConfiguration.Value.ExchangeNames["CalendarExchange"]}]," +
                                                     $"message queue: [{_messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"]}]");
+
+                _messageBus.Open(_messageBusConfiguration.Value.Uri, _messageBusConfiguration.Value.SslServerName);
+                
                 await _messageBus.Subscribe<EventNotification<EventDto>, BasicDeliverEventArgs>(_messageBusConfiguration.Value.Uri,
                                                                                         _messageBusConfiguration.Value.ExchangeNames["CalendarExchange"],
                                                                                         _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],

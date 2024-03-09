@@ -10,7 +10,7 @@ import Faq from './faq/Faq';
 import './Home.scss';
 
 const Home = () => {
-    return (<div>
+    return (<>
                 <Brand />
                 <div className='container-fluid container-lg g-0'>
                     <div className='grid-content my-5'>
@@ -22,7 +22,7 @@ const Home = () => {
                         <Faq />
                     </div>
                 </div>
-            </div>);
+            </>);
 };
 
 export default Home;

@@ -70,7 +70,7 @@ namespace Calendar.Appointment.API.Controllers
                 return BadRequest();
             }
 
-            _messageBus.Open(_messageBusConfiguration.Value.Uri);
+            _messageBus.Open(_messageBusConfiguration.Value.Uri, _messageBusConfiguration.Value.SslServerName);
             if (!_messageBus.Channel.IsOpen)
             {
                 return BadRequest();
@@ -87,7 +87,8 @@ namespace Calendar.Appointment.API.Controllers
             _messageBus.Publish(eventNotification, _messageBusConfiguration.Value.Uri, 
                                                    _messageBusConfiguration.Value.ExchangeNames["CalendarExchange"], 
                                                    _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"], 
-                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"]);
+                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],
+                                                   durable: true);
 
             return CreatedAtRoute("GetEvent", new { EventId = eventAdded.EventId }, eventAdded);
         }
@@ -103,7 +104,7 @@ namespace Calendar.Appointment.API.Controllers
                 return NotFound();
             }
 
-            _messageBus.Open(_messageBusConfiguration.Value.Uri);
+            _messageBus.Open(_messageBusConfiguration.Value.Uri, _messageBusConfiguration.Value.SslServerName);
             if (!_messageBus.Channel.IsOpen)
             {
                 return BadRequest();
@@ -128,7 +129,8 @@ namespace Calendar.Appointment.API.Controllers
             _messageBus.Publish(eventNotification, _messageBusConfiguration.Value.Uri,
                                                    _messageBusConfiguration.Value.ExchangeNames["CalendarExchange"],
                                                    _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],
-                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"]);
+                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],
+                                                   durable: true);
 
             return NoContent();
         }
@@ -144,7 +146,7 @@ namespace Calendar.Appointment.API.Controllers
                 return NotFound();
             }
 
-            _messageBus.Open(_messageBusConfiguration.Value.Uri);
+            _messageBus.Open(_messageBusConfiguration.Value.Uri, _messageBusConfiguration.Value.SslServerName);
             if (!_messageBus.Channel.IsOpen)
             {
                 return BadRequest();
@@ -163,13 +165,14 @@ namespace Calendar.Appointment.API.Controllers
             var eventNotification = new EventNotification<EventDto>()
             {
                 CurrentData = _mapper.Map<EventDto>(eventFound),
-                EventOperationType = EventOperationType.Update
+                EventOperationType = EventOperationType.Delete
             };
 
             _messageBus.Publish(eventNotification, _messageBusConfiguration.Value.Uri,
                                                    _messageBusConfiguration.Value.ExchangeNames["CalendarExchange"],
                                                    _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],
-                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"]);
+                                                   _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],
+                                                   durable: true);
 
             return NoContent();
         }

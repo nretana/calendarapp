@@ -528,7 +528,7 @@ $body-emphasis-color:       $black !default;
 $link-color:                              $body-color !default;
 $link-decoration:                         none !default; //underline !default;
 $link-shade-percentage:                   20% !default;
-$link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
+$link-hover-color:                        $primary-color !default; //shift-color($link-color, $link-shade-percentage) !default;
 $link-hover-decoration:                   null !default;
 
 $stretched-link-pseudo-element:           after !default;

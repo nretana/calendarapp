@@ -127,6 +127,6 @@
     <value>Your event {0} has been removed from your calendar.</value>
   </data>
   <data name="Event_Notification_Updated" xml:space="preserve">
-    <value>Your event {0} has been updated to your calendar on {1} at {2}.</value>
+    <value>Your event {0} has been updated in your calendar on {1} at {2}.</value>
   </data>
 </root>

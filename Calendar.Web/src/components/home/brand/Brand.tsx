@@ -3,9 +3,9 @@ import './Brand.scss';
 
 const Brand = () => {
     return (<section className='hero-section'>
-                <div className='container h-100 g-0 position-relative'>
-                    <div className='row h-100 p-0 g-0'>
-                        <div className='col-12 col-lg-6 align-self-center'>
+                <div className='container g-0'>
+                    <div className='row h-100'>
+                        <div className='col-12 col-lg-7 align-self-center'>
                             <div className='hero-content'>
                                     <div className=''>
                                         <span className='hero-subheader'>Online Calendar</span>
@@ -15,8 +15,6 @@ const Brand = () => {
                                     <button className='btn btn-dark mt-4'>Get Started</button>
                                 </div>
                             </div>
-                        <div className='col-12 col-lg-6'>
-                        </div>
                     </div>
                 </div>
             </section>)

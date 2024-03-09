@@ -1,3 +1,7 @@
+@import '../../../assets/scss/core/functions';
+@import '../../../assets/scss/core/variables';
+@import '../../../assets/scss/core/mixins';
+
 .sc-faq {
 
     .accordion {
@@ -5,9 +9,35 @@
             .accordion-header {
                 .accordion-button {
                     font-family: 'Lato';
-                    
                 }
             }
         }
     }
+
+    .img-content {
+        padding-top: 3rem;
+        align-self: flex-end;
+    }
+}
+
+@include media-breakpoint-up(lg){
+
+    div[class^="grid-cell"]{
+
+        &.sc-faq {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
+
+    .sc-faq {
+        padding-top: 0;
+        padding-bottom: 0;
+
+        .faq-content {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+    }
+
 }

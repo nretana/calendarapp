@@ -24,11 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Calendar Items", "Calendar 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL Server Db", "SQL Server Db", "{B98FABA2-70EE-4716-B8D0-008FBD3AF536}"
 	ProjectSection(SolutionItems) = preProject
-		SQL Server Db\calendardb.bak = SQL Server Db\calendardb.bak
+		SQL Server Db\attachdbscript.sql = SQL Server Db\attachdbscript.sql
 		SQL Server Db\Dockerfile = SQL Server Db\Dockerfile
 		SQL Server Db\entrypoint.sh = SQL Server Db\entrypoint.sh
-		SQL Server Db\initdb.sh = SQL Server Db\initdb.sh
-		SQL Server Db\restoredbscript.sql = SQL Server Db\restoredbscript.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMQ", "RabbitMQ", "{132260F4-472A-4B0B-A353-91853CDD2488}"
@@ -36,7 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMQ", "RabbitMQ", "{13
 		RabbitMQ\definitions.default.json = RabbitMQ\definitions.default.json
 		RabbitMQ\Dockerfile = RabbitMQ\Dockerfile
 		RabbitMQ\entrypoint.sh = RabbitMQ\entrypoint.sh
-		RabbitMQ\init.sh = RabbitMQ\init.sh
+		RabbitMQ\rabbitmq.conf = RabbitMQ\rabbitmq.conf
 	EndProjectSection
 EndProject
 Global

@@ -1,6 +1,4 @@
 ﻿
-version: '1.0'
-
 services:
 
   calendarui:
@@ -11,7 +9,7 @@ services:
    image: calendar.ui:latest
    restart: always
    ports:
-    - 5000:443 
+    - 443:443 
    depends_on:
     - calendargatewayapi
    volumes:
@@ -106,13 +104,15 @@ services:
    environment:
     - MSSQL_SA_PASSWORD=[set-sqlserver-password]
     - ACCEPT_EULA=Y 
+   volumes:
+    - ${USERPROFILE}/.calendarapp/calendardb/data:/var/opt/mssql/data
  
 
   rabbitmq:
    build: 
     context: ./RabbitMQ
     dockerfile: Dockerfile
-   container_name: calendar.rabbitmq
+   container_name: rabbitmqserver.chronoswebsite.dev
    image: calendar.rabbitmq:latest
    restart: always
    #environment:
@@ -121,9 +121,12 @@ services:
    ports:
     - 16672:15672
     - 5772:5672
+    - 5872:5671
    healthcheck:
     test: ["CMD", "rabbitmqctl", "ping"]
-    interval: 20s
-    timeout: 10s
+    interval: 30s
+    timeout: 15s
     retries: 3
+   volumes: 
+    - ${USERPROFILE}/.calendarapp/calendarrabbitmq/cert/server:/etc/rabbitmq/cert:ro
    

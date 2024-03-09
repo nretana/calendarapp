@@ -9,6 +9,13 @@
     min-height: 365px;
     position: relative;
     overflow: hidden;
+
+    > .container {
+        height: 100%;
+        position: relative;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
     
     &:before {
         content: ' ';
@@ -27,7 +34,7 @@
         color: $secondary-color;
         z-index: 1;
         position: relative;
-        padding: 0 1rem;
+        padding: 0;
         margin-top: 3.5rem;
 
         .hero-title {
@@ -51,6 +58,10 @@
 
 @include media-breakpoint-up(lg){
     .hero-section {
+
+        > .container {
+            padding: 0;
+        }
 
         &:after {
             content: ' ';

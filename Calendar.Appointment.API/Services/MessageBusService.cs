@@ -33,9 +33,23 @@ namespace Calendar.Appointment.API.Services
 
                 var replyToQueueName = requesMessageBus.BasicProperties.ReplyTo;
 
-                requesMessageBus.SubscribeToReply<Context.Entities.Event, BasicDeliverEventArgs>(_messageBusConfiguration.Value.Uri, string.Empty,
-                                                                replyToQueueName, replyToQueueName).GetAwaiter();
+                requesMessageBus.SubscribeToReply<Context.Entities.Event, BasicDeliverEventArgs>(_messageBusConfiguration.Value.Uri, 
+                                                                                                 string.Empty,
+                                                                                                 replyToQueueName, 
+                                                                                                 replyToQueueName).GetAwaiter();
+            }
 
+            return Task.CompletedTask;
+        }
+
+        public override Task StopAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using(var scope = _serviceScopeFactory.CreateScope())
+            {
+                var requesMessageBus = scope.ServiceProvider.GetRequiredService<IRequestMessageBus>();
+                requesMessageBus.Close();
             }
 
             return Task.CompletedTask;

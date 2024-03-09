@@ -1,3 +1,4 @@
+﻿using Calendar.Shared.MessageBus.PubSub;
 ﻿using System.Timers;
 
 namespace Calendar.Notification.API.Services
@@ -24,6 +25,19 @@ namespace Calendar.Notification.API.Services
             {
                 var _notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
                 _notificationService.AddNotification();
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public override Task StopAsync(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Stop background service");
+            cancellationToken.ThrowIfCancellationRequested();
+            using(var scope = _serviceScopeFactory.CreateScope())
+            {
+                var messageBus = scope.ServiceProvider.GetRequiredService<IMessageBus>();
+                messageBus.Close();
             }
 
             return Task.CompletedTask;

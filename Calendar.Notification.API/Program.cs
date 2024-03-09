@@ -1,12 +1,11 @@
 
 using Calendar.Notification.API.Configuration;
-using Calendar.Notification.API.Extensions;
+using Calendar.Notification.API.Middlewares;
 using Calendar.Notification.API.Models;
 using Calendar.Notification.API.Services;
 using Calendar.Shared.Email;
 using Calendar.Shared.MessageBus.PubSub;
 using Calendar.Shared.MessageBus.RequestReply;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Serilog;
 using System.Globalization;
@@ -47,6 +46,7 @@ namespace Calendar.Notification.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddHostedService<MessageBusService>();
@@ -55,7 +55,8 @@ namespace Calendar.Notification.API
             builder.Services.AddScoped<IResponseMessageBus, ResponseMessageBus>();
             builder.Services.AddScoped<INotificationService, NotificationService>();
 
-        
+            builder.Services.AddMessageBroker();
+
             //add curstom certificates to kestrel
             if (builder.Environment.IsDevelopment())
             {
@@ -81,9 +82,12 @@ namespace Calendar.Notification.API
                 app.UseSwaggerUI();
             }
 
+            
             app.UseHttpsRedirection();
 
+
             app.UseAuthorization();
+
 
             app.MapControllers();
 

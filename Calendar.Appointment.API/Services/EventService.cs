@@ -23,8 +23,6 @@ namespace Calendar.Appointment.API.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _requestMessageBus = requestMessageBus ?? throw new ArgumentNullException(nameof(requestMessageBus));
             _messageBusConfiguration = messageBusConfiguration ?? throw new ArgumentNullException(nameof(messageBusConfiguration));
-
-            ReplyToSubscriber().GetAwaiter();
         }
 
 

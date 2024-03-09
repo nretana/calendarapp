@@ -13,9 +13,9 @@ namespace Calendar.Shared.MessageBus.PubSub
 
     public class MessageBus : IMessageBus
     {
-        private ConnectionFactory? _connectionFactory;
-        private IConnection? _connection;
-        private IModel? _channel;
+        private static ConnectionFactory? _connectionFactory;
+        private static IConnection? _connection;
+        private static IModel? _channel;
         private readonly ILogger<MessageBus> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
@@ -32,12 +32,25 @@ namespace Calendar.Shared.MessageBus.PubSub
         /// Open a connection to the message broker
         /// </summary>
         /// <param name="Uri"></param>
-        public void Open(string Uri)
+        public void Open(string Uri, string sslServerName)
         {
+            if (_connection is not null && _connection.IsOpen)
+            {
+                return;
+            }
+
             _connectionFactory = new ConnectionFactory() { DispatchConsumersAsync = true };
             _connectionFactory.Uri = new Uri(Uri);
+            _connectionFactory.Ssl.Enabled = true;
+            _connectionFactory.Ssl.ServerName = sslServerName;
+
             _connection = _connectionFactory.CreateConnection();
             _channel = _connection.CreateModel();
+
+            _channel.CallbackException += (channel, args) =>
+            {
+                _logger.LogError($"Channel connection failed {channel}");
+            };
         }
 
 
@@ -82,21 +95,18 @@ namespace Calendar.Shared.MessageBus.PubSub
                     arguments.Add("x-dead-letter-routing-key", "calendar_dead_letter_queue");
                 }
 
-                CreateMessageQueue(exchangeName, Exchange.Direct, queueName, routingKey, durable: false, arguments);
+                CreateMessageQueue(exchangeName, Exchange.Direct, queueName, routingKey, durable, arguments);
 
                 var jsonObj = JsonConvert.SerializeObject(message);
                 byte[] messageBody = Encoding.UTF8.GetBytes(jsonObj);
-                _channel?.BasicPublish(exchangeName, routingKey, null, messageBody);
+                var channelProps = _channel?.CreateBasicProperties();
+                channelProps.Persistent = true;
+                _channel?.BasicPublish(exchangeName, routingKey, channelProps, messageBody);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Error trying to send message to exchange: [{exchangeName}] and message queue: [{queueName}], {ex}");
                 throw;
-            }
-            finally
-            {
-                //Dispose();
-                Close();
             }
         }
 
@@ -109,7 +119,7 @@ namespace Calendar.Shared.MessageBus.PubSub
         {
             Open(Uri);
             var arguments = new Dictionary<string, object>() { { "x-max-length", 1000 } };
-            CreateMessageQueue(exchangeName, Exchange.Direct, queueName, routingKey, durable: false, arguments);
+            CreateMessageQueue(exchangeName, Exchange.Direct, queueName, routingKey, durable, arguments);
             _channel?.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
             var consumer = new AsyncEventingBasicConsumer(_channel);
@@ -150,7 +160,7 @@ namespace Calendar.Shared.MessageBus.PubSub
                     arguments.Add("x-dead-letter-routing-key", "calendar_dead_letter_queue");
                 }
 
-                CreateMessageQueue(exchangeName, Exchange.Direct, queueName, routingKey, durable: false, arguments);
+                CreateMessageQueue(exchangeName, Exchange.Direct, queueName, routingKey, durable, arguments);
 
                 var count = _channel?.MessageCount(queueName) ?? 0;
                 _channel?.BasicQos(prefetchSize: 0, prefetchCount: (ushort)count, global: false);
@@ -234,7 +244,7 @@ namespace Calendar.Shared.MessageBus.PubSub
 
 
         /// <summary>
-        /// close curret connection to the message broker
+        /// close current connection to the message broker
         /// </summary>
         public void Dispose()
         {

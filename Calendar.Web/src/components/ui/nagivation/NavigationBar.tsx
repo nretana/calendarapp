@@ -24,7 +24,7 @@ const NavigationBar = () => {
     }, []);
 
     return(<Navbar expand='lg' className='py-3 fixed-top container-fluid' ref={refNavBar} onToggle={(expanded: boolean) => scrollHandler(expanded) }>
-            <div className='container'>
+            <div className='container-lg px-2 px-lg-0'>
                 <NavLink className='navbar-brand' to='/'>
                     <img className='img-fluid' src={brandLogo} alt='Chronos logo' />
                 </NavLink>

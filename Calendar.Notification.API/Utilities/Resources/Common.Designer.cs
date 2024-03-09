@@ -88,7 +88,7 @@ namespace Calendar.Notification.API.Utilities.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your event {0} has been updated to your calendar on {1} at {2}..
+        ///   Looks up a localized string similar to Your event {0} has been updated in your calendar on {1} at {2}..
         /// </summary>
         public static string Event_Notification_Updated {
             get {

@@ -4,10 +4,11 @@ using Calendar.Appointment.API.Utilities.JsonConverters;
 using Calendar.Shared.MessageBus.PubSub;
 using Calendar.Shared.MessageBus.RequestReply;
 using Calendar.Appointment.API.Context;
+using Calendar.Appointment.API.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using static Org.BouncyCastle.Math.EC.ECCurve;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddMiniProfiler(options =>
 {
 options.RouteBasePath = "/profiler";
@@ -39,6 +41,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IMessageBus, MessageBus>();
 builder.Services.AddScoped<IRequestMessageBus, RequestMessageBus>();
+
+builder.Services.AddMessageBroker();
 
 
 if (builder.Environment.IsDevelopment())

@@ -47,7 +47,7 @@
     display: grid;
     grid-template-columns: 50% 50%;
     grid-template-rows: repeat(34, auto);
-    margin: 0 0.75rem;
+    margin: 0 0.5rem;
     grid-row-gap: 2rem;
     position: relative;
     $grid-border-radius-width: 30px;
@@ -57,7 +57,7 @@
         border-radius: $grid-border-radius-width;
         color: $white;
         font-weight: 300;
-        padding: 3rem 3rem;
+        padding: 2rem 2rem;
 
         h2 {
             font-family: 'Tenor Sans';
@@ -101,7 +101,6 @@
     }
 }
 
-
 @include media-breakpoint-up(xl) { 
 
     //12 cells
@@ -120,6 +119,7 @@
             background-color: $secondary-color;
             position: relative;
             margin: 0;
+            padding: 2rem 2rem;
 
             h2 {
                 font-size: 3rem;
