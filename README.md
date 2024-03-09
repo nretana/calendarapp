@@ -13,10 +13,10 @@ A calendar app for tracking your appointments.
 <div align="center">
 
 
-https://github.com/nretana/calendarapp/assets/94148180/62386887-eaaa-4053-bfdf-ffc7d8351408
+https://github.com/nretana/calendarapp/assets/94148180/f2c6c255-c650-44de-a9fb-0020bdb1219c
 
 
-https://github.com/nretana/calendarapp/assets/94148180/96adaa8f-73b4-4e73-82f1-b95e777948f7
+https://github.com/nretana/calendarapp/assets/94148180/2d5a656e-e153-4860-873d-8f6612bbd78c
 
 
 </div>
