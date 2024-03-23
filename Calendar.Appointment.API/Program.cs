@@ -4,7 +4,6 @@ using Calendar.Appointment.API.Utilities.JsonConverters;
 using Calendar.Shared.MessageBus.PubSub;
 using Calendar.Shared.MessageBus.RequestReply;
 using Calendar.Appointment.API.Context;
-using Calendar.Appointment.API.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
@@ -59,12 +58,19 @@ if (builder.Environment.IsDevelopment())
     });
 }
 
-var app = builder.Build();
+builder.Services.AddCors(setup =>
+{
+    setup.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("https://www.chronoswebsite.dev")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .WithExposedHeaders("Location")
+              .Build();
+    });
+});
 
-app.UseCors(c => c.AllowAnyOrigin()
-  .AllowAnyHeader()
-  .AllowAnyMethod()
-  .WithExposedHeaders("Location"));
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -76,6 +82,8 @@ if (app.Environment.IsDevelopment())
 app.UseMiniProfiler();
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

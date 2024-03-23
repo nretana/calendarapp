@@ -83,8 +83,6 @@ namespace Calendar.Shared.MessageBus.PubSub
             try
             {
                 _logger.LogInformation($"send data to exchange: [{exchangeName}] and message queue: [{queueName}]");
-                Open(Uri);
-
                 var arguments = new Dictionary<string, object>() { { "x-max-length", 1000 } };
 
                 //create dead letter queue
@@ -117,7 +115,6 @@ namespace Calendar.Shared.MessageBus.PubSub
         /// <returns></returns>
         public Task Subscribe<T>(string Uri, string exchangeName, string queueName, string routingKey, bool durable = false)
         {
-            Open(Uri);
             var arguments = new Dictionary<string, object>() { { "x-max-length", 1000 } };
             CreateMessageQueue(exchangeName, Exchange.Direct, queueName, routingKey, durable, arguments);
             _channel?.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
@@ -149,7 +146,6 @@ namespace Calendar.Shared.MessageBus.PubSub
             try
             {
                 _logger.LogInformation($"Subscribe to exchange: [{exchangeName}] and message queue: [{queueName}]");
-                Open(Uri);
                 var arguments = new Dictionary<string, object>() { { "x-max-length", 1000 } };
 
                 //create dead letter queue

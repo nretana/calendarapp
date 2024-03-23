@@ -1,4 +1,5 @@
 
+using Calendar.Gateway.Middlewares;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using System.Net;
@@ -12,7 +13,7 @@ namespace Calendar.Gateway
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            if(builder.Environment.IsProduction())
+            if (builder.Environment.IsProduction())
             {
                 builder.Configuration.AddJsonFile("ocelot.Production.json", optional: false, reloadOnChange: true);
             }
@@ -37,14 +38,28 @@ namespace Calendar.Gateway
                 });
             }
 
+            builder.Services.AddCors(setup =>
+            {
+                setup.AddDefaultPolicy(policy =>
+                {
+                    policy.WithOrigins("https://www.chronoswebsite.dev")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .WithExposedHeaders("Location")
+                          .Build();
+                });
+            });
+
+
             var app = builder.Build();
 
             app.UseHttpsRedirection();
 
+            app.UseCors();
+
             app.UseAuthorization();
 
             app.UseOcelot().GetAwaiter().GetResult();
-
 
             app.Run();
         }

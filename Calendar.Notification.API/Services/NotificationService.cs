@@ -35,7 +35,6 @@ namespace Calendar.Notification.API.Services
         {
             try
             {
-                _logger.LogInformation($"Running background service");
                 _logger.LogInformation($"Subscribe to exchange: [{_messageBusConfiguration.Value.ExchangeNames["CalendarExchange"]}]," +
                                                     $"message queue: [{_messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"]}]");
 

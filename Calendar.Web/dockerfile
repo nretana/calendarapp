@@ -12,14 +12,7 @@ COPY package-lock.json ./
 
 RUN npm install
 
-
-#FROM node:alpine AS BUILD
-#ARG NODE_ENV=production
-#ENV NODE_ENV ${NODE_ENV}
-
-#WORKDIR /calendarapp
-
-RUN npm run build
+RUN npm run build:prod
 
 
 FROM nginx:1.23-alpine AS HOSTING
@@ -29,8 +22,6 @@ ENV NODE_ENV ${NODE_ENV}
 WORKDIR /
 RUN mkdir /initApp
 COPY entrypoint.sh /initApp
-
-#COPY --from=BUILD /calendarapp/ngnix.conf /etc/ngnix/conf.d/default.conf
 
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*

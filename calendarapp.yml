@@ -16,7 +16,6 @@ services:
     - ${USERPROFILE}/.calendarapp/calendarui/nginx/nginx.conf:/etc/nginx/conf.d/default.conf 
     - ${USERPROFILE}/.calendarapp/calendarui/cert/server:/etc/nginx/certs/
     - ${USERPROFILE}/.calendarapp/calendarui/cert/trusted:/usr/local/share/ca-certificates:ro
-    - ${USERPROFILE}/.calendarapp/shared/cert:/usr/local/share/ca-certificates:ro
 
 
   calendargatewayapi:
