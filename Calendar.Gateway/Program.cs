@@ -1,9 +1,7 @@
 
-using Calendar.Gateway.Middlewares;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Calendar.Gateway
 {
@@ -42,7 +40,8 @@ namespace Calendar.Gateway
             {
                 setup.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins("https://www.chronoswebsite.dev")
+                    var originUrl = builder.Configuration["Cors:OriginUrl"];
+                    policy.WithOrigins(originUrl)
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .WithExposedHeaders("Location")

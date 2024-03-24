@@ -1,4 +1,6 @@
-﻿namespace Calendar.Appointment.API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Calendar.Appointment.API.Models
 {
     public class EventCreateDto
     {
@@ -13,9 +15,5 @@
         public TimeOnly EndTime { get; set; }
 
         public DateTimeOffset EventDate { get; set; }
-
-        public DateTimeOffset CreatedDate { get; set; }
-
-        public DateTimeOffset ModifiedDate { get; set; }
     }
 }

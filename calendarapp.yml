@@ -116,7 +116,7 @@ services:
    restart: always
    #environment:
    # - RABBITMQ_DEFAULT_USER=guest
-   # - RABBITMQ_DEFUALT_PASS=guest123 
+   # - RABBITMQ_DEFAULT_PASS=guest123 
    ports:
     - 16672:15672
     - 5772:5672

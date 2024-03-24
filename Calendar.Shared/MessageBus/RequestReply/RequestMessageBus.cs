@@ -117,7 +117,7 @@ namespace Calendar.Shared.MessageBus.RequestReply
 
         public Task ConsumeReplyEventHandler<T>(object? sender, BasicDeliverEventArgs args)
         {
-            Console.WriteLine("Consuming response!!!");
+
             if (sender is null)
             {
                 throw new ArgumentNullException(nameof(sender));
