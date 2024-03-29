@@ -28,13 +28,6 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-builder.Services.AddMiniProfiler(options =>
-{
-options.RouteBasePath = "/profiler";
-options.ColorScheme = StackExchange.Profiling.ColorScheme.Dark;
-}).AddEntityFramework();
-
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //builder.Services.AddHostedService<MessageBusService>();
 builder.Services.AddScoped<IEventService, EventService>();
@@ -62,7 +55,8 @@ builder.Services.AddCors(setup =>
 {
     setup.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("https://www.chronoswebsite.dev")
+        var originUrl = builder.Configuration["Cors:OriginUrl"];
+        policy.WithOrigins(originUrl)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .WithExposedHeaders("Location")
@@ -78,8 +72,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseMiniProfiler();
 
 app.UseHttpsRedirection();
 

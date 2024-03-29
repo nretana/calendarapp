@@ -1,4 +1,4 @@
-﻿using Calendar.Appointment.API.Enum;
+﻿using Calendar.Appointment.API.Enums;
 
 namespace Calendar.Appointment.API.Models
 {

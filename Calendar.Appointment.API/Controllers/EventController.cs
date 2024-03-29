@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Calendar.Appointment.API.Configuration;
 using Calendar.Appointment.API.Context.Entities;
-using Calendar.Appointment.API.Enum;
+using Calendar.Appointment.API.Enums;
 using Calendar.Appointment.API.Models;
 using Calendar.Appointment.API.Models.Filters;
 using Calendar.Appointment.API.Services;
@@ -180,7 +180,7 @@ namespace Calendar.Appointment.API.Controllers
         [HttpOptions]
         [HttpOptions("{eventId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetEventOptions()
+        public ActionResult GetEventOptions()
         {
             Response.Headers.Add("Allow", "GET, POST, PATCH, DELETE, OPTIONS");
             return Ok();

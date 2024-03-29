@@ -1,4 +1,4 @@
-﻿namespace Calendar.Appointment.API.Enum
+﻿namespace Calendar.Notification.API.Enum
 {
     public enum EventOperationType
     {

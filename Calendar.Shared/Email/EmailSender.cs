@@ -1,13 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using MailKit;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MimeKit;
-using Serilog.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace Calendar.Shared.Email
@@ -15,17 +9,21 @@ namespace Calendar.Shared.Email
     public class EmailSender : IEmailSender
     {
         private readonly IOptions<EmailConfiguration> _emailConfiguration;
-        public EmailSender(IOptions<EmailConfiguration> emailConfiguration) {
+        private readonly ILogger _logger;
+        public EmailSender(ILogger<EmailSender> logger, IOptions<EmailConfiguration> emailConfiguration) {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _emailConfiguration = emailConfiguration ?? throw new ArgumentNullException(nameof(emailConfiguration));
         }
 
+
         public async Task SendEmailAsync(EmailMessage message)
         {
-            var messageTemplate = CreateEmailMessage(message);
+            var messageTemplate = await CreateEmailMessage(message);
             await SendToServerAsync(messageTemplate);
         }
 
-        private MimeMessage CreateEmailMessage(EmailMessage message)
+
+        private async Task<MimeMessage> CreateEmailMessage(EmailMessage message)
         {
             MimeMessage mimeMessage = new();
             mimeMessage.From.Add(new MailboxAddress("email", _emailConfiguration.Value.From));
@@ -55,9 +53,9 @@ namespace Calendar.Shared.Email
             }
             
             mimeMessage.Body = bodyBuilder.ToMessageBody();
-
             return mimeMessage;
         }
+
 
         private async Task SendToServerAsync(MimeMessage mimeMessage)
         {
@@ -70,17 +68,22 @@ namespace Calendar.Shared.Email
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
 
                     await client.AuthenticateAsync(_emailConfiguration.Value.Username, _emailConfiguration.Value.Password);
+                    client.MessageSent += OnMessageSent;        
                     await client.SendAsync(mimeMessage);
-
-                }
+               }
                 catch (Exception ex) {
                     throw;
                 }
                 finally {
                     await client.DisconnectAsync(true);
-                    client.Dispose();
                 }
             }
+        }
+
+
+        private void OnMessageSent(object? sender, MessageSentEventArgs args)
+        {
+            _logger.LogDebug("Event notification has been sent.");
         }
     }
 }

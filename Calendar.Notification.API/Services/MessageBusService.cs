@@ -1,5 +1,4 @@
 ﻿using Calendar.Shared.MessageBus.PubSub;
-﻿using System.Timers;
 
 namespace Calendar.Notification.API.Services
 {
@@ -15,7 +14,6 @@ namespace Calendar.Notification.API.Services
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-
 
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {

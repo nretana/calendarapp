@@ -158,7 +158,7 @@ namespace Calendar.Shared.MessageBus.PubSub
 
                 CreateMessageQueue(exchangeName, Exchange.Direct, queueName, routingKey, durable, arguments);
 
-                var count = _channel?.MessageCount(queueName) ?? 0;
+                var count = _channel?.MessageCount(queueName) ?? 1;
                 _channel?.BasicQos(prefetchSize: 0, prefetchCount: (ushort)count, global: false);
 
                 var consumer = new AsyncEventingBasicConsumer(_channel);

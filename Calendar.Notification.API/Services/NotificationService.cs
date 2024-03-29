@@ -4,13 +4,10 @@ using Calendar.Notification.API.Models;
 using Calendar.Notification.API.Utilities;
 using Calendar.Shared.Email;
 using Calendar.Shared.MessageBus.PubSub;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
 using System.Text;
-using System.Resources;
-using System.Reflection;
 using Calendar.Notification.API.Utilities.Resources;
 
 namespace Calendar.Notification.API.Services
@@ -44,7 +41,7 @@ namespace Calendar.Notification.API.Services
                                                                                         _messageBusConfiguration.Value.ExchangeNames["CalendarExchange"],
                                                                                         _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],
                                                                                         _messageBusConfiguration.Value.QueueNames["CalendarNotificationQueue"],
-                                                                                        ConsumerReceiverHandler, durable: false, deadLetterExchange: false);
+                                                                                        ConsumerReceiverHandler, durable: true, deadLetterExchange: false);
             }
             catch
             {
@@ -60,7 +57,7 @@ namespace Calendar.Notification.API.Services
         /// <param name="args"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public Task ConsumerReceiverHandler(object? sender, BasicDeliverEventArgs args, IServiceScopeFactory serviceScopeFactory)
+        public async Task ConsumerReceiverHandler(object? sender, BasicDeliverEventArgs args, IServiceScopeFactory serviceScopeFactory)
         {
             if (sender is null)
             {
@@ -85,7 +82,7 @@ namespace Calendar.Notification.API.Services
                 
                 var message = CreateEmailMessage(eventNotification, _userEmailConfig);
                 var _emailservice = scope.ServiceProvider.GetRequiredService<IEmailSender>();
-                _emailservice.SendEmailAsync(message).GetAwaiter();
+                await _emailservice.SendEmailAsync(message);
 
                 currentChannel.BasicAck(args.DeliveryTag, false);
             }
@@ -97,12 +94,11 @@ namespace Calendar.Notification.API.Services
                 _logger.LogError($"Error proccessing data from message queue bound to exchange [{args.Exchange}]: {ex}");
                 throw;
             }
-            return Task.CompletedTask;
         }
 
 
         /// <summary>
-        /// TODO: user data is comming from configuration file. 
+        /// TODO: user data is coming from configuration file. 
         /// It will be replaced by the integration of Identity Web API
         /// </summary>
         /// <param name="eventNotification"></param>
@@ -123,10 +119,6 @@ namespace Calendar.Notification.API.Services
                                            .Replace("[EventNotificationMessage]", htmlMessage)
                                            .Replace("[UserEmail]", userEmail?.UserEmail)
                                            .Replace("[AppName]", "Chronos");
-
-            /*List<EmailAttachment> emailAttachList = new() {
-                    EmailHelper.GetEmailAttachment("Utilities/Templates/Imgs", "email.png")
-                };*/
 
             var linkedResources = new Dictionary<string, string>() { { "[BrandImgSrc]", "Utilities/Templates/Imgs/brand_logo.png" } };
 
