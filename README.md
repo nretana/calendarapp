@@ -1,6 +1,6 @@
 # Calendar Web App
 
-A calendar app for tracking your appointments.
+Calendar app for tracking your appointments.
 
 ## Features
 * Appointment management
